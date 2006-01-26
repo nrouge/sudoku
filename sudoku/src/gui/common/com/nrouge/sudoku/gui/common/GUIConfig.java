@@ -8,26 +8,57 @@ import com.nrouge.sudoku.model.Grille;
  */
 public class GUIConfig {
 
-	private boolean showPossibilites = false;
-	private boolean stopped = false;
+	/**
+	 * La grille
+	 */
 	private Grille grille;
+
+	/**
+	 * Indique s'il faut montrer les possibilités
+	 */
+	private boolean showPossibilites;
+	
+	/**
+	 * Puissance du sudoku
+	 */
 	private byte puissance;
 	
+	/**
+	 * Niveau de résolution
+	 */
+	private int resolutionLevel = 0;
+	
+	/**
+	 * Niveau de génération
+	 */
+	private int generationLevel = 0;
+	
+	public GUIConfig(byte puissance) {
+		this.puissance = puissance;
+		reset(true);
+	}
+	
+	public void reset() {
+		reset(true);
+	}
+	
+	public void reset(Grille grille) {
+		this.grille = grille;
+		puissance = grille.getPuissance();
+		reset(false);
+	}
+	
+	private void reset(boolean creerGrille) {
+		if (creerGrille) grille = new Grille(puissance);
+		showPossibilites = false;
+	}
+
 	/**
 	 * Returns the grille
 	 * @return Grille
 	 */
 	public Grille getGrille() {
 		return grille;
-	}
-
-	/**
-	 * Sets the grille
-	 * @param grille The grille to set.
-	 */
-	public void setGrille(Grille grille) {
-		this.grille = grille;
-		puissance = grille.getPuissance();
 	}
 
 	/**
@@ -44,7 +75,6 @@ public class GUIConfig {
 	 */
 	public void setPuissance(byte puissance) {
 		this.puissance = puissance;
-		grille = new Grille(puissance);
 	}
 
 	/**
@@ -64,30 +94,34 @@ public class GUIConfig {
 	}
 
 	/**
-	 * Returns the stopped
-	 * @return boolean
+	 * Returns the generationLevel
+	 * @return int
 	 */
-	public boolean isStopped() {
-		return stopped;
+	public int getGenerationLevel() {
+		return generationLevel;
 	}
 
 	/**
-	 * Sets the stopped
-	 * @param stopped The stopped to set.
+	 * Sets the generationLevel
+	 * @param generationLevel The generationLevel to set.
 	 */
-	public void setStopped(boolean stopped) {
-		this.stopped = stopped;
-	}
-
-	public GUIConfig(byte puissance) {
-		this(new Grille(puissance));
+	public void setGenerationLevel(int generationLevel) {
+		this.generationLevel = generationLevel;
 	}
 
 	/**
-	 * 
+	 * Returns the resolutionLevel
+	 * @return int
 	 */
-	public GUIConfig(Grille grille) {
-		this.grille = grille;
+	public int getResolutionLevel() {
+		return resolutionLevel;
 	}
 
+	/**
+	 * Sets the resolutionLevel
+	 * @param resolutionLevel The resolutionLevel to set.
+	 */
+	public void setResolutionLevel(int resolutionLevel) {
+		this.resolutionLevel = resolutionLevel;
+	}
 }

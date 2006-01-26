@@ -1,6 +1,9 @@
 package com.nrouge.sudoku.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,18 +41,31 @@ public final class SudokuFileUtils {
 		}
 	}
 	
-	public static Grille importResource(String resourceName) {
+	public static Grille importFromResource(String resourceName) throws IOException {
 		InputStream is = null;
 		try {
 			is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
 			return importFromStream(is);
-		} catch (IOException ioe) {
-			return new Grille();
 		} finally {
-			if (is != null) {
-				try { is.close(); }
-				catch (IOException ioe) { }
-			}
+			close(is);
 		}
 	}
+	
+	public static Grille importFromFile(File f) throws IOException {
+		InputStream is = null;
+		try {
+			is = new FileInputStream(f);
+			return importFromStream(is);
+		} finally {
+			close(is);
+		}
+	}
+	
+	private static void close(InputStream is) {
+		if (is != null) {
+			try { is.close(); }
+			catch (IOException ioe) { }
+		}
+	}
+	
 }

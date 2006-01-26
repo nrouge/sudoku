@@ -97,7 +97,7 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 		} else if (config.isShowPossibilites()) {
 			return "TODO";
 		} else {
-			return "<html>Bonj<br>our";
+			return "";
 		}
 	}
 	

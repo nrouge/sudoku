@@ -22,14 +22,6 @@ public class SwingGUIConfig extends GUIConfig {
 	}
 
 	/**
-	 * @param grille
-	 */
-	public SwingGUIConfig(Grille grille, SudokuSwingGUI sudokuSwingGUI) {
-		super(grille);
-		this.sudokuSwingGUI = sudokuSwingGUI;
-	}
-
-	/**
 	 * Returns the sudokuSwingGUI
 	 * @return SudokuSwingGUI
 	 */
