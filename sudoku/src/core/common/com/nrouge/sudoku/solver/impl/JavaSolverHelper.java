@@ -379,7 +379,7 @@ class JavaSolverHelper {
 			throw new UnsolvableCaseException(c);
 		}
 		if (c.calculerIsSolved()) {
-			ccl.caseHasChanged(c);
+			if (ccl != null) ccl.caseHasChanged(c);
 		}
 		//if (c.calculerIsSolved() && log.isInfoEnabled()) log.info(level+":"+c.getId()+"="+g.getCharValeurs().toChar(c.getValeur()));
 	}
