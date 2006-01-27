@@ -7,13 +7,11 @@ import com.nrouge.sudoku.model.Grille;
 import com.nrouge.sudoku.solver.ICaseChangeListener;
 import com.nrouge.sudoku.solver.ISolver;
 import com.nrouge.sudoku.solver.MultipleSolutionException;
-import com.nrouge.sudoku.solver.SolverException;
-import com.nrouge.sudoku.solver.SolverThread;
 import com.nrouge.sudoku.solver.UndeterminedSolutionException;
 import com.nrouge.sudoku.solver.UnsolvableCaseException;
 import com.nrouge.sudoku.util.PossibilitesUtils;
 
-class NicoSolverHelper {
+class JavaSolverHelper {
 	
 	//private static final Log log = LogFactory.getLog(NicoSolverHelper.class);
 
@@ -25,7 +23,7 @@ class NicoSolverHelper {
 	final byte puissance;
 	final Case[][] cs;
 	
-	NicoSolverHelper(Grille g, ICaseChangeListener ccl) {
+	JavaSolverHelper(Grille g, ICaseChangeListener ccl) {
 		this.g = g;
 		this.ccl = ccl;
 		length = g.getLength();
@@ -318,48 +316,35 @@ class NicoSolverHelper {
 				y = j;
 			}
 		}
-		if (c == null) { //NORMALEMENT IMPOSSIBLE
+		if (c == null) {
+			//NORMALEMENT IMPOSSIBLE
 			throw new IllegalStateException();
 		}
 		final int[] valeursPossibles = PossibilitesUtils.getValeursPossibles(c.getPossibilites());
 		final int nbValeursPossibles = valeursPossibles.length;
-		//on teste toutes les valeurs possibles, un thread par possibilité
-		final SolverThread[] solverThreads = new SolverThread[nbValeursPossibles];
-		final ThreadGroup threadGroup = new ThreadGroup(Thread.currentThread().getName()+"->"+c.getId());
+		//on teste toutes les valeurs possibles
+		int valeur = -1; //valeur qui convient
 		for (int i = 0; i < nbValeursPossibles; i++) {
 			final Grille g2 = (Grille) g.clone();
 			final Case c2 = g2.getCase(x, y);
 			c2.setValeur(valeursPossibles[i]);
-			//les threads résolvent au niveau - 1
-			final SolverThread st = new SolverThread(threadGroup, g2, level - 1, solver, c2.getId()+"="+g.getCharValeurs().toChar(valeursPossibles[i]));
-			solverThreads[i] = st;
-			st.start();
-		}
-		//on teste les résultats des tests effectués par les threads
-		int valeur = -1; //valeur qui convient
-		for (int i = 0; i < nbValeursPossibles; i++) {
-			final SolverThread st = solverThreads[i];
-			if (!st.isFinished()) {
-				try { st.join(); } catch (InterruptedException ie) { }
-			}
-			final Boolean result = st.getResult();
-			if (result == null) {
-				final SolverException se = st.getSolverException();
-				if (se instanceof UnsolvableCaseException) continue; //la résolution a donné une case insoluble, elle est donc mauvaise => on continue de regarder les résultats des autres threads
-				//dans les autres cas
-				threadGroup.interrupt(); //on annule tous les autres threads
-				if (se instanceof MultipleSolutionException) throw (MultipleSolutionException) se; //solution multiple
-				if (se instanceof UndeterminedSolutionException) throw (UndeterminedSolutionException) se; //solution indéterminée
+			boolean test;
+			try {
+				test = solver.solve(g2, level - 1);
+			} catch (UnsolvableCaseException uce) {
 				continue;
+			} catch (MultipleSolutionException mse) {
+				throw mse;
+			} catch (UndeterminedSolutionException use) {
+				throw use;
 			}
-			if (!result.booleanValue()) {
+			if (!test) {
 				//la solution est indéterminée si on a pas résolu au niveau 4 (il faudrait encore faire des suppositions pour être sûr)
 				if (level == 4) throw new UndeterminedSolutionException("Solution indéterminée");
-				//sinon, on continue de regarder les autres threads
+				//sinon, on continue de regarder les autres possibilités
 				continue;
 			}
 			if (valeur != -1) { //on a déjà une solution => la solution est donc multiple
-				threadGroup.interrupt(); //on annule tous les autres threads
 				throw new MultipleSolutionException();
 			}
 			valeur = valeursPossibles[i];
@@ -392,6 +377,9 @@ class NicoSolverHelper {
 		if (ccl != null) ccl.caseHasChanged(c);
 		if (newPos == 0) {
 			throw new UnsolvableCaseException(c);
+		}
+		if (c.calculerIsSolved()) {
+			ccl.caseHasChanged(c);
 		}
 		//if (c.calculerIsSolved() && log.isInfoEnabled()) log.info(level+":"+c.getId()+"="+g.getCharValeurs().toChar(c.getValeur()));
 	}

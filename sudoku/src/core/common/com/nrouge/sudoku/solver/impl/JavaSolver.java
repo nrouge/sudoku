@@ -7,7 +7,7 @@ import com.nrouge.sudoku.solver.MultipleSolutionException;
 import com.nrouge.sudoku.solver.UndeterminedSolutionException;
 import com.nrouge.sudoku.solver.UnsolvableCaseException;
 
-public class NicoSolver implements ISolver {
+public class JavaSolver implements ISolver {
 	
 	/**
 	 * @see com.nrouge.sudoku.solver.ISolver#getMaxLevel()
@@ -32,7 +32,7 @@ public class NicoSolver implements ISolver {
 		int alreadySolved = grille.getSolvedCount();
 		int currentSolved = 0;
 		boolean cont = true; //indique s'il faut continuer
-		NicoSolverHelper helper = createHelper(grille, ccl);
+		JavaSolverHelper helper = createHelper(grille, ccl);
 		while (cont && ((alreadySolved + currentSolved) < totalCases)) {
 			//niveau 0
 			cont = helper.solve0();
@@ -59,7 +59,7 @@ public class NicoSolver implements ISolver {
 		return (alreadySolved + currentSolved) == totalCases;
 	}
 
-	NicoSolverHelper createHelper(Grille grille, ICaseChangeListener ccl) {
-		return new NicoSolverHelper(grille, ccl);
+	JavaSolverHelper createHelper(Grille grille, ICaseChangeListener ccl) {
+		return new JavaSolverHelper(grille, ccl);
 	}
 }

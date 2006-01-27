@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.nrouge.sudoku.model.Grille;
-import com.nrouge.sudoku.solver.impl.Nico2Solver;
+import com.nrouge.sudoku.solver.impl.JavaSolver;
 import com.nrouge.sudoku.util.SudokuFileUtils;
 
 public class NicoSolverTest extends TestCase {
@@ -30,7 +30,7 @@ public class NicoSolverTest extends TestCase {
 	
 	private void _test(String sdkFile, int level) throws IOException, SolverException {
 		Grille g = getGrille(sdkFile);
-		Nico2Solver ns = new Nico2Solver();
+		JavaSolver ns = new JavaSolver();
 		log.warn("Tentative de résolution");
 		try {
 			ns.solve(g, level);

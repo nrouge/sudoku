@@ -10,7 +10,7 @@ public final class SolverThread extends Thread {
 	
 	//private static final Log log = LogFactory.getLog(SolverThread.class);
 	
-	//paramètres d'entrée du thread
+	//paramètres d'entrée du solver
 	private final Grille grille;
 	private final int level;
 	private final ISolver solver;
