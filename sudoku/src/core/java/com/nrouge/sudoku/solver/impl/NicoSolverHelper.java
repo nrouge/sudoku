@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.nrouge.sudoku.model.Case;
 import com.nrouge.sudoku.model.Grille;
+import com.nrouge.sudoku.solver.ICaseChangeListener;
 import com.nrouge.sudoku.solver.ISolver;
 import com.nrouge.sudoku.solver.MultipleSolutionException;
 import com.nrouge.sudoku.solver.SolverException;
@@ -17,14 +18,16 @@ class NicoSolverHelper {
 	//private static final Log log = LogFactory.getLog(NicoSolverHelper.class);
 
 	final Grille g;
+	final ICaseChangeListener ccl;
 	final int length;
 	final int length2;
 	final int length3;
 	final byte puissance;
 	final Case[][] cs;
 	
-	NicoSolverHelper(Grille g) {
+	NicoSolverHelper(Grille g, ICaseChangeListener ccl) {
 		this.g = g;
+		this.ccl = ccl;
 		length = g.getLength();
 		length2 = length << 1;
 		length3 = 3 * length;
@@ -112,6 +115,7 @@ class NicoSolverHelper {
 				if (posCount[v] == 1) { // test si la valeur est répétée une seule fois 
 					Case c = cs[i][idx[v]];
 					c.setValeur(v);
+					if (ccl != null) ccl.caseHasChanged(c);
 					//if (log.isInfoEnabled()) log.info("1:"+c.getId()+"="+g.getCharValeurs().toChar(v));
 					return true;
 				}
@@ -365,6 +369,7 @@ class NicoSolverHelper {
 			return false;
 		}
 		c.setValeur(valeur);
+		if (ccl != null) ccl.caseHasChanged(c);
 		//if (log.isInfoEnabled()) log.info("4:"+c.getId()+"="+g.getCharValeurs().toChar(valeur));
 		return true;
 	}
@@ -384,6 +389,7 @@ class NicoSolverHelper {
 	private void updatePossiblites(Case c, long newPos, int level) throws UnsolvableCaseException {
 		//if (log.isInfoEnabled()) log.info(level+":"+c.getId()+":"+toBinaryString(c.getPossibilites())+"->"+toBinaryString(newPos));
 		c.setPossibilites(newPos);
+		if (ccl != null) ccl.caseHasChanged(c);
 		if (newPos == 0) {
 			throw new UnsolvableCaseException(c);
 		}

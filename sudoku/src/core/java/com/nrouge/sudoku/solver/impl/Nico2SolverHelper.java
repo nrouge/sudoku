@@ -2,6 +2,7 @@ package com.nrouge.sudoku.solver.impl;
 
 import com.nrouge.sudoku.model.Case;
 import com.nrouge.sudoku.model.Grille;
+import com.nrouge.sudoku.solver.ICaseChangeListener;
 import com.nrouge.sudoku.solver.ISolver;
 import com.nrouge.sudoku.solver.MultipleSolutionException;
 import com.nrouge.sudoku.solver.UndeterminedSolutionException;
@@ -19,8 +20,8 @@ class Nico2SolverHelper extends NicoSolverHelper {
 	/**
 	 * @param g
 	 */
-	Nico2SolverHelper(Grille g) {
-		super(g);
+	Nico2SolverHelper(Grille g, ICaseChangeListener ccl) {
+		super(g, ccl);
 	}
 
 	/**
@@ -81,6 +82,7 @@ class Nico2SolverHelper extends NicoSolverHelper {
 			return false;
 		}
 		c.setValeur(valeur);
+		if (ccl != null) ccl.caseHasChanged(c);
 		//if (log.isInfoEnabled()) log.info("4:"+c.getId()+"="+g.getCharValeurs().toChar(valeur));
 		return true;
 	}

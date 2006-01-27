@@ -4,27 +4,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.EventListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.event.MouseInputListener;
 
-import com.nrouge.sudoku.gui.common.GUIConfig;
 import com.nrouge.sudoku.model.Case;
 import com.nrouge.sudoku.model.CharValeurs;
 import com.nrouge.sudoku.model.Grille;
+import com.nrouge.sudoku.util.PossibilitesUtils;
 
 /**
  * 
@@ -41,14 +35,14 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 	
 	private boolean focused;
 	
-	private final GUIConfig config;
+	private final SwingGUIConfig config;
 	private final Grille grille;
 	private final CharValeurs cv;
 	private final int length;
 	private final byte puissance;
 	private final JLabel label = new JLabel();
-	
-	public CasePanel(GUIConfig config, Case cas) {
+
+	public CasePanel(SwingGUIConfig config, Case cas) {
 		super();
 		this.config = config;
 		this.cas = cas;
@@ -65,6 +59,7 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 		addMouseListener(this);
 		addMouseWheelListener(this);
 		setLayout(new GridLayout());
+		label.setFont(cas.isSolved() ? config.getValeurFont() : config.getPossibiliteFont());
 		add(label);
 	}
 
@@ -74,20 +69,23 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 	public void paint(Graphics graphics) {
 		String newText = getLabelText();
 		if (!newText.equals(label.getText())) {
-			label.setText(newText);
 			if (cas.isSolved()) {
 				label.setHorizontalAlignment(SwingConstants.CENTER);
 				label.setHorizontalTextPosition(SwingConstants.CENTER);
 				label.setVerticalAlignment(SwingConstants.CENTER);
 				label.setVerticalTextPosition(SwingConstants.CENTER);
-			} else if (config.isShowPossibilites()) {
-				//TODO
+				label.setFont(config.getValeurFont());
 			} else {
-				//TODO
+				label.setHorizontalAlignment(SwingConstants.LEFT);
+				label.setHorizontalTextPosition(SwingConstants.LEFT);
+				label.setVerticalAlignment(SwingConstants.TOP);
+				label.setVerticalTextPosition(SwingConstants.TOP);
+				label.setFont(config.getPossibiliteFont());
 			}
+			label.setText(newText);
 		}
 		label.setForeground((immutable) ? Color.black : Color.gray);
-		setBackground(focused ? Color.lightGray : Color.white);
+		setBackground(focused && !immutable ? Color.lightGray : Color.white);
 		super.paint(graphics);
 	}
 	
@@ -95,7 +93,13 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 		if (cas.isSolved()) {
 			return Character.toString(cv.toChar(cas.getValeur()));
 		} else if (config.isShowPossibilites()) {
-			return "TODO";
+			final int[] valeurs = PossibilitesUtils.getValeursPossibles(cas.getPossibilites());
+			final int valeursLength = valeurs.length;
+			StringBuffer sb = new StringBuffer(valeursLength);
+			for (int i = 0; i < valeursLength; i++) {
+				sb.append(cv.toChar(valeurs[i]));
+			}
+			return SwingGUIUtils.getWrappedLabelText(this, cas.isSolved() ? config.getValeurFont() : config.getPossibiliteFont(), sb.toString());
 		} else {
 			return "";
 		}

@@ -1,6 +1,7 @@
 package com.nrouge.sudoku.solver.impl;
 
 import com.nrouge.sudoku.model.Grille;
+import com.nrouge.sudoku.solver.ICaseChangeListener;
 import com.nrouge.sudoku.solver.ISolver;
 import com.nrouge.sudoku.solver.MultipleSolutionException;
 import com.nrouge.sudoku.solver.UndeterminedSolutionException;
@@ -18,13 +19,20 @@ public class NicoSolver implements ISolver {
 	/**
 	 * @see ISolver#solve(Grille, int)
 	 */
-	public final boolean solve(Grille g, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
-		final int length = g.getLength();
+	public final boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
+		return solve(grille, level, null);
+	}
+	
+	/**
+	 * @see com.nrouge.sudoku.solver.ISolver#solve(com.nrouge.sudoku.model.Grille, int, com.nrouge.sudoku.solver.ICaseChangeListener)
+	 */
+	public boolean solve(Grille grille, int level, ICaseChangeListener ccl) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
+		final int length = grille.getLength();
 		final int totalCases = length * length;
-		int alreadySolved = g.getSolvedCount();
+		int alreadySolved = grille.getSolvedCount();
 		int currentSolved = 0;
 		boolean cont = true; //indique s'il faut continuer
-		NicoSolverHelper helper = createHelper(g);
+		NicoSolverHelper helper = createHelper(grille, ccl);
 		while (cont && ((alreadySolved + currentSolved) < totalCases)) {
 			//niveau 0
 			cont = helper.solve0();
@@ -50,8 +58,8 @@ public class NicoSolver implements ISolver {
 		}
 		return (alreadySolved + currentSolved) == totalCases;
 	}
-	
-	NicoSolverHelper createHelper(Grille g) {
-		return new NicoSolverHelper(g);
+
+	NicoSolverHelper createHelper(Grille grille, ICaseChangeListener ccl) {
+		return new NicoSolverHelper(grille, ccl);
 	}
 }

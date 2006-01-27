@@ -31,7 +31,16 @@ import com.nrouge.sudoku.util.SudokuFileUtils;
  * @author Nicolas Rougé
  */
 public class SudokuMenuBar extends JMenuBar {
-
+	
+	private static final String[] NIVEAUX_DIFFICULTES = {
+		"Trivial",
+		"Facile",
+		"Moyen",
+		"Difficile",
+		"Démoniaque"
+	};
+		
+	
 	public SudokuMenuBar(SwingGUIConfig config) {
 		add(new SudokuMenu(config));
 		add(new ResolutionMenu(config));
@@ -161,6 +170,7 @@ public class SudokuMenuBar extends JMenuBar {
 			setMnemonic(KeyEvent.VK_R);
 			add(new ResoudreMenuItem(config));
 			addSeparator();
+			add(new NiveauSubMenu(config));
 		}
 		private static class ResoudreMenuItem extends AbstractMenuItem {
 			private ResoudreMenuItem(SwingGUIConfig config) {
@@ -177,12 +187,50 @@ public class SudokuMenuBar extends JMenuBar {
 				config.getSudokuSwingGUI().repaint();
 			}
 		}
+		private static class NiveauSubMenu extends AbstractSubRadioButtonMenu {
+			private NiveauSubMenu(SwingGUIConfig config) {
+				super(config, "Niveau");
+				setMnemonic(KeyEvent.VK_N);
+				for (int i = 0; i < NIVEAUX_DIFFICULTES.length; i++) addRadioButton(NIVEAUX_DIFFICULTES[i]);
+			}
+			public void actionPerformed(ActionEvent ae) {
+				config.setResolutionLevel(getNiveau(ae.getActionCommand()));
+			}
+			protected boolean isSelected(String text) {
+				return text.equals(NIVEAUX_DIFFICULTES[config.getResolutionLevel()]);
+			}
+		}
 	}
 	
 	private static class GenerationMenu extends JMenu {
 		private GenerationMenu(SwingGUIConfig config) {
 			super("Génération");
 			setMnemonic(KeyEvent.VK_G);
+			add(new GenererMenuItem(config));
+			addSeparator();
+			add(new NiveauSubMenu(config));
+		}
+		private static class GenererMenuItem extends AbstractMenuItem {
+			private GenererMenuItem(SwingGUIConfig config) {
+				super(config, "Générer");
+				setMnemonic(KeyEvent.VK_G);
+			}
+			public void actionPerformed(ActionEvent ae) {
+				//TODO
+			}
+		}
+		private static class NiveauSubMenu extends AbstractSubRadioButtonMenu {
+			private NiveauSubMenu(SwingGUIConfig config) {
+				super(config, "Niveau");
+				setMnemonic(KeyEvent.VK_N);
+				for (int i = 0; i < NIVEAUX_DIFFICULTES.length; i++) addRadioButton(NIVEAUX_DIFFICULTES[i]);
+			}
+			public void actionPerformed(ActionEvent ae) {
+				config.setGenerationLevel(getNiveau(ae.getActionCommand()));
+			}
+			protected boolean isSelected(String text) {
+				return text.equals(NIVEAUX_DIFFICULTES[config.getGenerationLevel()]);
+			}
 		}
 	}
 	
@@ -192,4 +240,13 @@ public class SudokuMenuBar extends JMenuBar {
 		frame.setContentPane(gp);
 		frame.pack();
 	}
+
+	private static int getNiveau(String niv) {
+		final int length = NIVEAUX_DIFFICULTES.length;
+		for (int i = 0; i < length; i++) {
+			if (NIVEAUX_DIFFICULTES[i].equals(niv)) return i;
+		}
+		return 0;
+	}
+
 }

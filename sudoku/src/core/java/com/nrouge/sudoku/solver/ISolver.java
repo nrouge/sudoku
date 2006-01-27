@@ -19,6 +19,8 @@ public interface ISolver {
 	 */
 	boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException;
 	
+	boolean solve(Grille grille, int level, ICaseChangeListener ccl) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException;
+	
 	/**
 	 * @return le niveau maximal de résolution du solver
 	 */

@@ -1,6 +1,7 @@
 package com.nrouge.sudoku.gui.swing;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -20,11 +21,11 @@ public class GrillePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 8356229247659064982L;
 	
-	private final GUIConfig config;
+	private final SwingGUIConfig config;
 	
 	private final Grille grille;
 	
-	public GrillePanel(GUIConfig config) {
+	public GrillePanel(SwingGUIConfig config) {
 		this.config = config;
 		grille = config.getGrille();
 		final byte puissance = grille.getPuissance();
@@ -32,6 +33,7 @@ public class GrillePanel extends JPanel {
 		setLayout(new GridLayout(puissance, puissance, 2, 2));
 		setBackground(Color.black);
 		setOpaque(true);
+		//valeurFont = getFont().
 		for (int a = 0; a < puissance; a++) {
 			for (int b = 0; b < puissance; b++) {
 				JPanel carre = new JPanel(new GridLayout(puissance, puissance, 1, 1));
