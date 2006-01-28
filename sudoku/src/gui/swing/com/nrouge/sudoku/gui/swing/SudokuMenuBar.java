@@ -7,6 +7,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
@@ -18,10 +20,13 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import com.nrouge.sudoku.gui.common.GUIConfig;
+import com.nrouge.sudoku.model.Case;
 import com.nrouge.sudoku.model.Grille;
+import com.nrouge.sudoku.solver.ISolver;
 import com.nrouge.sudoku.solver.MultipleSolutionException;
 import com.nrouge.sudoku.solver.SolverException;
 import com.nrouge.sudoku.solver.SolverFactory;
+import com.nrouge.sudoku.solver.SolverThread;
 import com.nrouge.sudoku.solver.UndeterminedSolutionException;
 import com.nrouge.sudoku.solver.UnsolvableCaseException;
 import com.nrouge.sudoku.util.SudokuFileUtils;
@@ -178,11 +183,27 @@ public class SudokuMenuBar extends JMenuBar {
 				setMnemonic(KeyEvent.VK_R);
 			}
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					SolverFactory.createDefaultSolver().solve(config.getGrille(), config.getResolutionLevel());
-				} catch (SolverException se) {
-					JOptionPane.showMessageDialog(config.getSudokuSwingGUI(), se, "Erreur", JOptionPane.ERROR_MESSAGE);
+				ISolver solver = SolverFactory.createDefaultSolver();
+				SolverThread st = new SolverThread(solver, config.getGrille(), config.getResolutionLevel(), new SwingCaseChangeListener(config.getCasePanelMap(), 100));
+				st.start();
+				try { st.join();
+				} catch (InterruptedException ie) { }
+				if (st.getResult() == null) {
+					SolverException se = st.getMultipleSolutionException();
+					if (se == null) se = st.getUnsolvableCaseException();
+					if (se != null) {
+						JOptionPane.showMessageDialog(config.getSudokuSwingGUI(), se.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+					}
 				}
+				//on fige les valeurs saisies par l'utilisateur, et on sauvegarde les possibilités
+				Map casePanelMap = config.getCasePanelMap();
+				for (Iterator it = casePanelMap.keySet().iterator(); it.hasNext(); ) {
+					Case c = (Case) it.next();
+					CasePanel cp = (CasePanel) casePanelMap.get(c);
+					cp.setSauvegardePossibilites(c.getPossibilites());
+					cp.setImmutable(c.isSolved());
+				}
+				//l'affichage montre les possibilités et on repaint tout
 				config.setShowPossibilites(true);
 				config.getSudokuSwingGUI().repaint();
 			}

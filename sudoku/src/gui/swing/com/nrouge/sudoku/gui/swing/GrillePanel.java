@@ -1,13 +1,13 @@
 package com.nrouge.sudoku.gui.swing;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import com.nrouge.sudoku.gui.common.GUIConfig;
+import com.nrouge.sudoku.model.Case;
 import com.nrouge.sudoku.model.Grille;
 
 /**
@@ -33,6 +33,8 @@ public class GrillePanel extends JPanel {
 		setLayout(new GridLayout(puissance, puissance, 2, 2));
 		setBackground(Color.black);
 		setOpaque(true);
+		Map casePanelMap = new HashMap();
+		config.setCasePanelMap(casePanelMap);
 		//valeurFont = getFont().
 		for (int a = 0; a < puissance; a++) {
 			for (int b = 0; b < puissance; b++) {
@@ -41,7 +43,10 @@ public class GrillePanel extends JPanel {
 				for (int k = 0; k < length; k++) {
 					int i = a * puissance + k / puissance;
 					int j = b * puissance + k % puissance;
-					carre.add(new CasePanel(config, grille.getCase(i, j)));
+					Case c = grille.getCase(i, j);
+					CasePanel cp = new CasePanel(config, c);
+					carre.add(cp);
+					casePanelMap.put(c, cp);
 				}
 				add(carre);
 			}

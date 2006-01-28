@@ -3,29 +3,59 @@ package com.nrouge.sudoku.solver;
 import com.nrouge.sudoku.model.Grille;
 
 /**
- * Thread pour résolution multi-threadée
+ * Thread pour résolution
  * @author Nicolas Rougé
  */
 public final class SolverThread extends Thread {
 	
-	//private static final Log log = LogFactory.getLog(SolverThread.class);
+	//instance du solver utilisé
+	private final ISolver solver;
 	
 	//paramètres d'entrée du solver
 	private final Grille grille;
 	private final int level;
-	private final ISolver solver;
+	private final ICaseChangeListener caseChangeListener;
 	
 	//résultat du traitement effectué par le thread
 	private Boolean result;
-	private SolverException solverException;
-	private boolean finished = false;
+	private UnsolvableCaseException unsolvableCaseException;
+	private MultipleSolutionException multipleSolutionException;
+	private UndeterminedSolutionException undeterminedSolutionException;
 	
-	
-	public SolverThread(ThreadGroup threadGroup, Grille grille, int level, ISolver solver, String name) {
-		super(threadGroup, Thread.currentThread().getName()+"->"+name);
+	public SolverThread(ThreadGroup threadGroup, String threadName, ISolver solver, Grille grille, int level, ICaseChangeListener caseChangeListener) {
+		super(threadGroup, Thread.currentThread().getName()+"->"+threadName);
 		this.grille = grille;
 		this.level = level;
 		this.solver = solver;
+		this.caseChangeListener = caseChangeListener;
+	}
+	
+	public SolverThread(String threadName, ISolver solver, Grille grille, int level, ICaseChangeListener caseChangeListener) {
+		this(Thread.currentThread().getThreadGroup(), threadName, solver, grille, level, caseChangeListener);
+	}
+	
+	public SolverThread(ThreadGroup threadGroup, ISolver solver, Grille grille, int level, ICaseChangeListener caseChangeListener) {
+		this(threadGroup, solver.getClass().getName(), solver, grille, level, caseChangeListener);
+	}
+	
+	public SolverThread(ISolver solver, Grille grille, int level, ICaseChangeListener caseChangeListener) {
+		this(solver.getClass().getName(), solver, grille, level, caseChangeListener);
+	}
+	
+	public SolverThread(ThreadGroup threadGroup, String threadName, ISolver solver, Grille grille, int level) {
+		this(threadGroup, threadName, solver, grille, level, null);
+	}
+	
+	public SolverThread(String threadName, ISolver solver, Grille grille, int level) {
+		this(Thread.currentThread().getThreadGroup(), threadName, solver, grille, level);
+	}
+	
+	public SolverThread(ThreadGroup threadGroup, ISolver solver, Grille grille, int level) {
+		this(threadGroup, solver.getClass().getName(), solver, grille, level);
+	}
+	
+	public SolverThread(ISolver solver, Grille grille, int level) {
+		this(solver.getClass().getName(), solver, grille, level);
 	}
 	
 	/**
@@ -33,27 +63,14 @@ public final class SolverThread extends Thread {
 	 */
 	public void run() {
 		try {
-			result = Boolean.valueOf(solver.solve(grille, level));
-			/*if (log.isInfoEnabled()) {
-				log.info("termine avec "+result);
-				if (result.booleanValue()) log.debug("Grille résolue :\n"+grille);
-			}*/
-		} catch (SolverException se) {
-			this.solverException = se;
-			//if (log.isWarnEnabled()) log.info("ERREUR "+se.getMessage());
-		} catch (Throwable t) {
-			t.printStackTrace(System.err);
-		} finally {
-			finished = true;
+			result = Boolean.valueOf(solver.solve(grille, level, caseChangeListener));
+		} catch (UnsolvableCaseException uce) {
+			unsolvableCaseException = uce;
+		} catch (MultipleSolutionException mse) {
+			multipleSolutionException = mse;
+		} catch (UndeterminedSolutionException use) {
+			undeterminedSolutionException = use;
 		}
-	}
-
-	/**
-	 * Returns the grille
-	 * @return Grille
-	 */
-	public Grille getGrille() {
-		return grille;
 	}
 
 	/**
@@ -65,19 +82,27 @@ public final class SolverThread extends Thread {
 	}
 
 	/**
-	 * Returns the finished
-	 * @return boolean
+	 * Returns the multipleSolutionException
+	 * @return MultipleSolutionException
 	 */
-	public boolean isFinished() {
-		return finished;
+	public MultipleSolutionException getMultipleSolutionException() {
+		return multipleSolutionException;
 	}
 
 	/**
-	 * Returns the solverException
-	 * @return SolverException
+	 * Returns the undeterminedSolutionException
+	 * @return UndeterminedSolutionException
 	 */
-	public SolverException getSolverException() {
-		return solverException;
+	public UndeterminedSolutionException getUndeterminedSolutionException() {
+		return undeterminedSolutionException;
+	}
+
+	/**
+	 * Returns the unsolvableCaseException
+	 * @return UnsolvableCaseException
+	 */
+	public UnsolvableCaseException getUnsolvableCaseException() {
+		return unsolvableCaseException;
 	}
 
 }

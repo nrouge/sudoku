@@ -1,11 +1,9 @@
 package com.nrouge.sudoku.gui.swing;
 
 import java.awt.Font;
-
-import javax.swing.RootPaneContainer;
+import java.util.Map;
 
 import com.nrouge.sudoku.gui.common.GUIConfig;
-import com.nrouge.sudoku.model.Grille;
 
 /**
  * 
@@ -33,6 +31,27 @@ public class SwingGUIConfig extends GUIConfig {
 	 */
 	private final Font possibiliteFont;
 	
+	/**
+	 * Mappe de correspondance entre les cases et leur équivalent graphique, CasePanel
+	 */
+	private Map casePanelMap;
+	
+	/**
+	 * Returns the casePanelMap
+	 * @return Map
+	 */
+	public Map getCasePanelMap() {
+		return casePanelMap;
+	}
+
+	/**
+	 * Sets the casePanelMap
+	 * @param casePanelMap The casePanelMap to set.
+	 */
+	public void setCasePanelMap(Map casePanelMap) {
+		this.casePanelMap = casePanelMap;
+	}
+
 	/**
 	 * @param puissance
 	 */

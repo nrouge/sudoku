@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,15 +31,34 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	private static final long serialVersionUID = 5066973626162910843L;
 	
+	/**
+	 * La case
+	 */
 	private final Case cas;
+	
+	/**
+	 * Indique si la case ne peut pas changer de valeur
+	 */
 	private boolean immutable;
 	
+	/**
+	 * Indique que la case a été chargée valorisée
+	 */
+	private boolean loaded;
+	
+	/**
+	 * Indique si la case a le focus
+	 */
 	private boolean focused;
+	
+	/**
+	 * Sauvegarde des possibilités d'une case
+	 */
+	private long sauvegardePossibilites;
 	
 	private final SwingGUIConfig config;
 	private final Grille grille;
 	private final CharValeurs cv;
-	private final int length;
 	private final byte puissance;
 	private final JLabel label = new JLabel();
 
@@ -46,11 +66,11 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 		super();
 		this.config = config;
 		this.cas = cas;
-		immutable = cas.isSolved();
+		loaded = immutable = cas.isSolved();
 		grille = config.getGrille();
 		cv = grille.getCharValeurs();
-		length = grille.getLength();
 		puissance = grille.getPuissance();
+		sauvegardePossibilites = cas.getPossibilites();
 		setPreferredSize(new Dimension(32, 32));
 		setBackground(Color.white);
 		setOpaque(true);
@@ -84,7 +104,7 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 			}
 			label.setText(newText);
 		}
-		label.setForeground((immutable) ? Color.black : Color.gray);
+		label.setForeground(immutable ? (loaded ? Color.black : Color.blue) : Color.gray);
 		setBackground(focused && !immutable ? Color.lightGray : Color.white);
 		super.paint(graphics);
 	}
@@ -105,28 +125,26 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 		}
 	}
 	
-	private void incrementerValeur() {
+	private void changerValeur(boolean plus) {
 		if (immutable) return;
-		if (cas.isSolved()) {
-			int valeur = cas.getValeur() + 1;
-			if (valeur == length) cas.reset(puissance); else cas.setValeur(valeur);
+		int[] valeurs = PossibilitesUtils.getValeursPossibles(sauvegardePossibilites);
+		int valeursLength = valeurs.length;
+		if (valeursLength == 0) return;
+		if (!cas.isSolved()) {
+			cas.setValeur((plus) ? valeurs[0] : valeurs[valeursLength - 1]);
 		} else {
-			cas.setValeur(0);
+			int idx = Arrays.binarySearch(valeurs, cas.getValeur());
+			idx += (plus) ? 1 : -1;
+			if ((idx <= -1) || (idx >= valeursLength)) {
+				cas.reset(puissance);
+				cas.setPossibilites(sauvegardePossibilites);
+			} else {
+				cas.setValeur(valeurs[idx]);
+			}
 		}
 		repaint();
 	}
 	
-	private void decrementerValeur() {
-		if (immutable) return;
-		if (cas.isSolved()) {
-			int valeur = cas.getValeur() - 1;
-			if (valeur == -1) cas.reset(puissance); else cas.setValeur(valeur);
-		} else {
-			cas.setValeur(length - 1);
-		}
-		repaint();
-	}
-
 	/**
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
@@ -151,8 +169,8 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	public void mouseClicked(MouseEvent me) {
 		switch (me.getButton()) {
-			case MouseEvent.BUTTON1: incrementerValeur(); break;
-			case MouseEvent.BUTTON3: decrementerValeur(); break;
+			case MouseEvent.BUTTON1: changerValeur(true); break;
+			case MouseEvent.BUTTON3: changerValeur(false); break;
 			default:
 		}
 	}
@@ -191,9 +209,25 @@ public class CasePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	public void mouseWheelMoved(MouseWheelEvent mwe) {
 		switch (mwe.getWheelRotation()) {
-			case -1: incrementerValeur(); break;
-			case  1: decrementerValeur(); break;
+			case -1: changerValeur(true); break;
+			case  1: changerValeur(false); break;
 			default:
 		}
+	}
+
+	/**
+	 * Sets the immutable
+	 * @param immutable The immutable to set.
+	 */
+	public void setImmutable(boolean immutable) {
+		this.immutable = immutable;
+	}
+
+	/**
+	 * Sets the sauvegardePossibilites
+	 * @param sauvegardePossibilites The sauvegardePossibilites to set.
+	 */
+	public void setSauvegardePossibilites(long sauvegardePossibilites) {
+		this.sauvegardePossibilites = sauvegardePossibilites;
 	}
 }
