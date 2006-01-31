@@ -85,6 +85,7 @@ public final class NicoGenerator implements IGenerator {
 					}
 				}
 			} while (!finished);
+			if (level == 0) return grille;
 			//on enlève les case jusqu'à avoir une grille qui n'est pas solvable au niveau (level - 1)
 			try {
 				final Grille testedGrille = clonerGrille();
