@@ -37,6 +37,11 @@ public class SwingGUIConfig extends GUIConfig {
 	private Map casePanelMap;
 	
 	/**
+	 * Indique si la résolution doit être visible par l'utilisateur
+	 */
+	private boolean visualResolution;
+	
+	/**
 	 * Returns the casePanelMap
 	 * @return Map
 	 */
@@ -85,6 +90,22 @@ public class SwingGUIConfig extends GUIConfig {
 	 */
 	public Font getValeurFont() {
 		return valeurFont;
+	}
+
+	/**
+	 * Returns the visualResolution
+	 * @return boolean
+	 */
+	public boolean isVisualResolution() {
+		return visualResolution;
+	}
+
+	/**
+	 * Sets the visualResolution
+	 * @param visualResolution The visualResolution to set.
+	 */
+	public void setVisualResolution(boolean visualResolution) {
+		this.visualResolution = visualResolution;
 	}
 
 }
