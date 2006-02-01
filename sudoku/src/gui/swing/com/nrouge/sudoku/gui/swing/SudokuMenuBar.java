@@ -204,7 +204,11 @@ public class SudokuMenuBar extends JMenuBar {
 				setMnemonic(KeyEvent.VK_G);
 			}
 			public void actionPerformed(ActionEvent ae) {
-				//TODO
+				Grille g = GenerationUtils.generer(config);
+				if (g != null) {
+					config.reset(g);
+					recreerContenu(config);
+				}
 			}
 		}
 		private static class NiveauSubMenu extends AbstractSubRadioButtonMenu {

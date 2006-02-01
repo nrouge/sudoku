@@ -78,7 +78,7 @@ public final class ResolutionUtils {
 			this.config = config;
 		}
 		public void run() {
-			JDialog dialog = new JDialog(config.getSudokuSwingGUI(), "coucou", true);
+			JDialog dialog = new JDialog(config.getSudokuSwingGUI(), "Résolution", true);
 			dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			JPanel panel = new JPanel();
 			panel.add(new JLabel("Résolution en cours..."));

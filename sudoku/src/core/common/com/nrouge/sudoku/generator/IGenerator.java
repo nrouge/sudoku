@@ -1,7 +1,6 @@
 package com.nrouge.sudoku.generator;
 
 import com.nrouge.sudoku.model.Grille;
-import com.nrouge.sudoku.solver.ISolver;
 
 /**
  * 
@@ -17,6 +16,7 @@ public interface IGenerator {
 	 * @param level niveau 
 	 * @return le sudoku
 	 */
-	Grille generate(byte puissance, int level, ISolver solver);
+	Grille generate(byte puissance, int level);
 	
+	Grille generate(byte puissance, int level, IGeneratorProgressionListener gpl);
 }

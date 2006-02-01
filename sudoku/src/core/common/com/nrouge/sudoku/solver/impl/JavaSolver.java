@@ -10,13 +10,6 @@ import com.nrouge.sudoku.solver.UnsolvableCaseException;
 public class JavaSolver implements ISolver {
 	
 	/**
-	 * @see com.nrouge.sudoku.solver.ISolver#getMaxLevel()
-	 */
-	public final int getMaxLevel() {
-		return 10;
-	}
-
-	/**
 	 * @see ISolver#solve(Grille, int)
 	 */
 	public final boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
