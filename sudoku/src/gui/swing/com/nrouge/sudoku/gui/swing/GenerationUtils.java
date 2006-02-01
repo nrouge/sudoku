@@ -84,6 +84,7 @@ public class GenerationUtils {
 			panel.add(new JLabel("Génération en cours..."));
 			final int length = config.getPuissance() * config.getPuissance();
 			progressBar = new JProgressBar(0, 2 * length * length);
+			progressBar.setStringPainted(true);
 			panel.add(progressBar);
 			setContentPane(panel);
 			pack();

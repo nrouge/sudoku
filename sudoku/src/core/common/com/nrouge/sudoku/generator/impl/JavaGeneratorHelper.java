@@ -224,7 +224,7 @@ class JavaGeneratorHelper {
 		for (int i = 0; i < length; i++)
 		for (int j = 0; j < length; j++) {
 			final Case c = grille.getCase(i, j);
-			if (c.isSolved() || (PossibilitesUtils.getNbPossibilites(c.getPossibilites()) == 1)) continue;
+			if (c.isSolved() || (PossibilitesUtils.getNbPossibilites(c.getPossibilites()) <= 1)) continue;
 			res.add(new int[] { i, j});
 		}
 		return res;
