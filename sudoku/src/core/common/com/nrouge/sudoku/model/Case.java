@@ -1,9 +1,16 @@
 package com.nrouge.sudoku.model;
 
+import java.io.Serializable;
+
 import com.nrouge.sudoku.util.PossibilitesUtils;
 
-public final class Case implements Cloneable {
+public final class Case implements Cloneable, Serializable {
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 3233565544192566858L;
+
 	/**
 	 * Masque des possibilités pour la case
 	 */

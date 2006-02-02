@@ -25,10 +25,9 @@ public class GenerationUtils {
 		GeneratorThread gt = new GeneratorThread(config, dialog);
 		gt.start();
 		dialog.setVisible(true);
-		try { gt.join(); }
-		catch (InterruptedException ie) { }
-		System.out.println("Grille générée :\n" + gt.getGrille());
-		return gt.getGrille();
+		Grille res = gt.getGrille();
+		if (res == null) gt.interrupt();
+		return res;
 	}
 	
 	private static final class GeneratorThread extends Thread {
@@ -76,10 +75,10 @@ public class GenerationUtils {
 	}
 	
 	private static final class GeneratorDialog extends JDialog {
+		private static final long serialVersionUID = 2209498781902351649L;
 		private final JProgressBar progressBar;
 		private GeneratorDialog(SwingGUIConfig config) {
 			super(config.getSudokuSwingGUI(), "Génération", true);
-			setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			JPanel panel = new JPanel();
 			panel.add(new JLabel("Génération en cours..."));
 			final int length = config.getPuissance() * config.getPuissance();

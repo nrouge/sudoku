@@ -1,12 +1,19 @@
 package com.nrouge.sudoku.gui.common;
 
+import java.io.Serializable;
+
 import com.nrouge.sudoku.model.Grille;
 
 /**
  * 
  * @author Nicolas Rougé
  */
-public class GUIConfig {
+public class GUIConfig implements Serializable {
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -7398356762960339850L;
 
 	/**
 	 * La grille

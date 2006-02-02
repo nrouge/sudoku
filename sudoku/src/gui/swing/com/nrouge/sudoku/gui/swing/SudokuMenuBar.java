@@ -26,6 +26,11 @@ import com.nrouge.sudoku.util.SudokuFileUtils;
  */
 public class SudokuMenuBar extends JMenuBar {
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -3686730641846182465L;
+	
 	private static final String[] NIVEAUX_DIFFICULTES = {
 		"Trivial",
 		"Facile",
@@ -33,7 +38,6 @@ public class SudokuMenuBar extends JMenuBar {
 		"Difficile",
 		"Démoniaque"
 	};
-		
 	
 	public SudokuMenuBar(SwingGUIConfig config) {
 		add(new SudokuMenu(config));
@@ -73,6 +77,7 @@ public class SudokuMenuBar extends JMenuBar {
 		}
 	}
 	private static class SudokuMenu extends JMenu {
+		private static final long serialVersionUID = 5121973680071674130L;
 		private SudokuMenu(SwingGUIConfig config) {
 			super("Sudoku");
 			setMnemonic(KeyEvent.VK_S);
@@ -85,6 +90,7 @@ public class SudokuMenuBar extends JMenuBar {
 			add(new QuitterMenuItem(config));
 		}
 		private static class NouveauMenuItem extends AbstractMenuItem {
+			private static final long serialVersionUID = 8414581137318324149L;
 			private NouveauMenuItem(SwingGUIConfig config) {
 				super(config, "Nouveau");
 				setMnemonic(KeyEvent.VK_N);
@@ -95,6 +101,7 @@ public class SudokuMenuBar extends JMenuBar {
 			}
 		}
 		private static class PuissanceSubMenu extends AbstractSubRadioButtonMenu {
+			private static final long serialVersionUID = -4322556136876777103L;
 			private PuissanceSubMenu(SwingGUIConfig config) {
 				super(config, "Puissance");
 				setMnemonic(KeyEvent.VK_P);
@@ -108,6 +115,7 @@ public class SudokuMenuBar extends JMenuBar {
 			}
 		}
 		private static class OuvrirMenuItem extends AbstractMenuItem {
+			private static final long serialVersionUID = -7931740933185517660L;
 			private JFileChooser fc = new JFileChooser();
 			private OuvrirMenuItem(SwingGUIConfig config) {
 				super(config, "Ouvrir");
@@ -139,6 +147,7 @@ public class SudokuMenuBar extends JMenuBar {
 			}
 		}
 		private static class EnregistrerMenuItem extends AbstractMenuItem {
+			private static final long serialVersionUID = -5988852769388873883L;
 			private EnregistrerMenuItem(SwingGUIConfig config) {
 				super(config, "Enregistrer");
 				setMnemonic(KeyEvent.VK_E);
@@ -148,17 +157,20 @@ public class SudokuMenuBar extends JMenuBar {
 			}
 		}
 		private static class QuitterMenuItem extends AbstractMenuItem {
+			private static final long serialVersionUID = -7611769209230288842L;
 			private QuitterMenuItem(SwingGUIConfig config) {
 				super(config, "Quitter");
 				setMnemonic(KeyEvent.VK_Q);
 			}
 			public void actionPerformed(ActionEvent ae) {
+				ContextUtils.saveConfig(config);
 				System.exit(0);
 			}
 		}
 	}
 	
 	private static class ResolutionMenu extends JMenu {
+		private static final long serialVersionUID = -4743824466883393786L;
 		private ResolutionMenu(SwingGUIConfig config) {
 			super("Résolution");
 			setMnemonic(KeyEvent.VK_R);
@@ -167,6 +179,7 @@ public class SudokuMenuBar extends JMenuBar {
 			add(new NiveauSubMenu(config));
 		}
 		private static class ResoudreMenuItem extends AbstractMenuItem {
+			private static final long serialVersionUID = -270597765984335162L;
 			private ResoudreMenuItem(SwingGUIConfig config) {
 				super(config, "Résoudre");
 				setMnemonic(KeyEvent.VK_R);
@@ -176,6 +189,7 @@ public class SudokuMenuBar extends JMenuBar {
 			}
 		}
 		private static class NiveauSubMenu extends AbstractSubRadioButtonMenu {
+			private static final long serialVersionUID = -7928938894257526502L;
 			private NiveauSubMenu(SwingGUIConfig config) {
 				super(config, "Niveau");
 				setMnemonic(KeyEvent.VK_N);
@@ -191,6 +205,7 @@ public class SudokuMenuBar extends JMenuBar {
 	}
 	
 	private static class GenerationMenu extends JMenu {
+		private static final long serialVersionUID = -6156956204066898376L;
 		private GenerationMenu(SwingGUIConfig config) {
 			super("Génération");
 			setMnemonic(KeyEvent.VK_G);
@@ -199,6 +214,7 @@ public class SudokuMenuBar extends JMenuBar {
 			add(new NiveauSubMenu(config));
 		}
 		private static class GenererMenuItem extends AbstractMenuItem {
+			private static final long serialVersionUID = 9020965900378347809L;
 			private GenererMenuItem(SwingGUIConfig config) {
 				super(config, "Générer");
 				setMnemonic(KeyEvent.VK_G);
@@ -212,6 +228,7 @@ public class SudokuMenuBar extends JMenuBar {
 			}
 		}
 		private static class NiveauSubMenu extends AbstractSubRadioButtonMenu {
+			private static final long serialVersionUID = 6745760495500544781L;
 			private NiveauSubMenu(SwingGUIConfig config) {
 				super(config, "Niveau");
 				setMnemonic(KeyEvent.VK_N);

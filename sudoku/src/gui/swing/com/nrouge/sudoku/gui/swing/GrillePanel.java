@@ -21,12 +21,9 @@ public class GrillePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 8356229247659064982L;
 	
-	private final SwingGUIConfig config;
-	
 	private final Grille grille;
 	
 	public GrillePanel(SwingGUIConfig config) {
-		this.config = config;
 		grille = config.getGrille();
 		final byte puissance = grille.getPuissance();
 		final int length = grille.getLength();

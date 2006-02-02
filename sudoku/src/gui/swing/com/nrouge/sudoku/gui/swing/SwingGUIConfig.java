@@ -11,6 +11,12 @@ import com.nrouge.sudoku.gui.common.GUIConfig;
  */
 public class SwingGUIConfig extends GUIConfig {
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -509552238453735138L;
+	
+	
 	private static final float VALEUR_FONT_SIZE = 24f;
 	private static final int VALEUR_FONT_STYLE = Font.BOLD;
 	private static final float POSSIBILITE_FONT_SIZE = 10f;
@@ -19,7 +25,7 @@ public class SwingGUIConfig extends GUIConfig {
 	/**
 	 * Référence sur la frame principale
 	 */
-	private final SudokuSwingGUI sudokuSwingGUI;
+	private transient SudokuSwingGUI sudokuSwingGUI;
 	
 	/**
 	 * Fonte pour l'affichage des valeurs
@@ -106,6 +112,14 @@ public class SwingGUIConfig extends GUIConfig {
 	 */
 	public void setVisualResolution(boolean visualResolution) {
 		this.visualResolution = visualResolution;
+	}
+
+	/**
+	 * Sets the sudokuSwingGUI
+	 * @param sudokuSwingGUI The sudokuSwingGUI to set.
+	 */
+	public void setSudokuSwingGUI(SudokuSwingGUI sudokuSwingGUI) {
+		this.sudokuSwingGUI = sudokuSwingGUI;
 	}
 
 }
