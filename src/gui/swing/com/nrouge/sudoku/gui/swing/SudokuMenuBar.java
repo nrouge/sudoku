@@ -22,7 +22,7 @@ import com.nrouge.sudoku.util.SudokuFileUtils;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public class SudokuMenuBar extends JMenuBar {
 	
@@ -36,7 +36,7 @@ public class SudokuMenuBar extends JMenuBar {
 		"Facile",
 		"Moyen",
 		"Difficile",
-		"Démoniaque"
+		"DÃ©moniaque", "2", "3"
 	};
 	
 	public SudokuMenuBar(SwingGUIConfig config) {
@@ -172,7 +172,7 @@ public class SudokuMenuBar extends JMenuBar {
 	private static class ResolutionMenu extends JMenu {
 		private static final long serialVersionUID = -4743824466883393786L;
 		private ResolutionMenu(SwingGUIConfig config) {
-			super("Résolution");
+			super("RÃ©solution");
 			setMnemonic(KeyEvent.VK_R);
 			add(new ResoudreMenuItem(config));
 			addSeparator();
@@ -181,7 +181,7 @@ public class SudokuMenuBar extends JMenuBar {
 		private static class ResoudreMenuItem extends AbstractMenuItem {
 			private static final long serialVersionUID = -270597765984335162L;
 			private ResoudreMenuItem(SwingGUIConfig config) {
-				super(config, "Résoudre");
+				super(config, "RÃ©soudre");
 				setMnemonic(KeyEvent.VK_R);
 			}
 			public void actionPerformed(ActionEvent ae) {
@@ -207,7 +207,7 @@ public class SudokuMenuBar extends JMenuBar {
 	private static class GenerationMenu extends JMenu {
 		private static final long serialVersionUID = -6156956204066898376L;
 		private GenerationMenu(SwingGUIConfig config) {
-			super("Génération");
+			super("GÃ©nÃ©ration");
 			setMnemonic(KeyEvent.VK_G);
 			add(new GenererMenuItem(config));
 			addSeparator();
@@ -216,7 +216,7 @@ public class SudokuMenuBar extends JMenuBar {
 		private static class GenererMenuItem extends AbstractMenuItem {
 			private static final long serialVersionUID = 9020965900378347809L;
 			private GenererMenuItem(SwingGUIConfig config) {
-				super(config, "Générer");
+				super(config, "GÃ©nÃ©rer");
 				setMnemonic(KeyEvent.VK_G);
 			}
 			public void actionPerformed(ActionEvent ae) {
