@@ -8,17 +8,8 @@ import com.nrouge.sudoku.solver.UndeterminedSolutionException;
 import com.nrouge.sudoku.solver.UnsolvableCaseException;
 
 public class JavaSolver implements ISolver {
-	
-	/**
-	 * @see ISolver#solve(Grille, int)
-	 */
-	public final boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
-		return solve(grille, level, null);
-	}
-	
-	/**
-	 * @see com.nrouge.sudoku.solver.ISolver#solve(com.nrouge.sudoku.model.Grille, int, com.nrouge.sudoku.solver.ICaseChangeListener)
-	 */
+
+	@Override
 	public boolean solve(Grille grille, int level, ICaseChangeListener ccl) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
 		final int length = grille.getLength();
 		final int totalCases = length * length;

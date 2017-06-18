@@ -3,7 +3,10 @@ package com.nrouge.sudoku.model;
 import java.io.Serializable;
 
 import com.nrouge.sudoku.util.PossibilitesUtils;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 public final class Case implements Cloneable, Serializable {
 	
 	/**
@@ -14,6 +17,7 @@ public final class Case implements Cloneable, Serializable {
 	/**
 	 * Masque des possibilités pour la case
 	 */
+	@Setter
 	private long possibilites;
 	
 	/**
@@ -39,43 +43,12 @@ public final class Case implements Cloneable, Serializable {
 	// getters
 
 	/**
-	 * @return Returns the possibilites.
-	 */
-	public long getPossibilites() {
-		return possibilites;
-	}
-
-	/**
-	 * @return Returns the id.
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @return booléen indiquant si la case est résolue
-	 */
-	public boolean isSolved() {
-		return solved;
-	}
-	
-	/**
 	 * @return la valeur de la case, -1 si elle n'a aucune valeur encore déterminée
 	 */
 	public int getValeur() {
 		return solved ? PossibilitesUtils.getValeur(possibilites) : -1;
 	}
-	
-	// setters
-	
-	/**
-	 * Renseigne les possibilités pour la case
-	 * @param possibilites The possibilites to set.
-	 */
-	public void setPossibilites(long possibilites) {
-		this.possibilites = possibilites;
-	}
-	
+
 	//autres
 
 	/**
@@ -103,16 +76,12 @@ public final class Case implements Cloneable, Serializable {
 		return solved;
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
+	@Override
 	public String toString() {
-		return new StringBuffer(id).append(':').append(solved).append(':').append(Long.toBinaryString(possibilites)).toString();
+		return id + ":" + solved + ":" + Long.toBinaryString(possibilites);
 	}
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
+	@Override
 	protected Object clone() {
 		try {
 			return super.clone();

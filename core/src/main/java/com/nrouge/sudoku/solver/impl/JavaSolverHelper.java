@@ -151,7 +151,7 @@ class JavaSolverHelper {
 				//il y a au moins 3 cases non résolues
 				// => on fait varier n de 2 à min(<nombre de cases non résolues>,<nombre de valeurs possibles>) - 1
 				/*if (log.isDebugEnabled()) {
-					StringBuffer sb = new StringBuffer();
+					StringBuilder sb = new StringBuilder();
 					for (int j = 0; j < nbNotSolved; j++) sb.append((j == 0) ? "" : "|").append(toString(PossibilitesUtils.getValeursPossibles(pos[j])));
 					log.debug("2:i="+i+":"+sb.toString());
 				}*/
@@ -358,19 +358,7 @@ class JavaSolverHelper {
 		//if (log.isInfoEnabled()) log.info("4:"+c.getId()+"="+g.getCharValeurs().toChar(valeur));
 		return true;
 	}
-	
-	/*private String toBinaryString(long pos) {
-		return PossibilitesUtils.toBinaryString(pos, length);
-	}*/
-	
-	/*private String toString(int[] va) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < va.length; i++) {
-			sb.append(g.getCharValeurs().toChar(va[i]));
-		}
-		return sb.toString();
-	}*/
-	
+
 	private void updatePossiblites(Case c, long newPos, int level) throws UnsolvableCaseException {
 		//if (log.isInfoEnabled()) log.info(level+":"+c.getId()+":"+toBinaryString(c.getPossibilites())+"->"+toBinaryString(newPos));
 		c.setPossibilites(newPos);

@@ -13,17 +13,7 @@ import com.nrouge.sudoku.solver.UnsolvableCaseException;
  */
 public class JNISolver implements ISolver {
 
-	/**
-	 * @see com.nrouge.sudoku.solver.ISolver#solve(com.nrouge.sudoku.model.Grille, int)
-	 */
-	public boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * @see com.nrouge.sudoku.solver.ISolver#solve(com.nrouge.sudoku.model.Grille, int, com.nrouge.sudoku.solver.ICaseChangeListener)
-	 */
+	@Override
 	public boolean solve(Grille grille, int level, ICaseChangeListener ccl) throws UnsolvableCaseException,
 			MultipleSolutionException, UndeterminedSolutionException {
 		// TODO Auto-generated method stub

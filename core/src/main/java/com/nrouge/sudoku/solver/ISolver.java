@@ -17,7 +17,9 @@ public interface ISolver {
 	 * @throws MultipleSolutionException si le sudoku n'a pas de solution unique
 	 * @throws UndeterminedSolutionException si le solver ne sait pas s'il y a une solution (pour les niveaux de résolution emettant des suppositions)
 	 */
-	boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException;
+	default boolean solve(Grille grille, int level) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException {
+		return solve(grille, level, null);
+	}
 	
 	boolean solve(Grille grille, int level, ICaseChangeListener ccl) throws UnsolvableCaseException, MultipleSolutionException, UndeterminedSolutionException;
 	

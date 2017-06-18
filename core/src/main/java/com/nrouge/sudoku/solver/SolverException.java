@@ -21,4 +21,8 @@ public abstract class SolverException extends Exception {
 		super(message);
 	}
 
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
+	}
 }

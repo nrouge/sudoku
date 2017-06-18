@@ -1,5 +1,7 @@
 package com.nrouge.sudoku.model;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
 public final class Grille implements Cloneable, Serializable {
@@ -17,16 +19,19 @@ public final class Grille implements Cloneable, Serializable {
 	/**
 	 * Puissance du sudoku
 	 */
+	@Getter
 	private final byte puissance;
 	
 	/**
 	 * Lien vers les données de références de représentation en char des valeurs
 	 */
+	@Getter
 	private final CharValeurs charValeurs;
 	
 	/**
 	 * Taille de la grille (carré de la puissance)
 	 */
+	@Getter
 	private final int length;
 	
 	public Grille() {
@@ -55,18 +60,9 @@ public final class Grille implements Cloneable, Serializable {
 		return cases[i][j];
 	}
 
-	/**
-	 * @return Returns the charValeurs.
-	 */
-	public CharValeurs getCharValeurs() {
-		return charValeurs;
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
+	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length; j++) {
 				sb.append(charValeurs.toChar(cases[i][j].getValeur()));
@@ -76,20 +72,6 @@ public final class Grille implements Cloneable, Serializable {
 		return sb.toString();
 	}
 
-	/**
-	 * @return Returns the length.
-	 */
-	public int getLength() {
-		return length;
-	}
-
-	/**
-	 * @return Returns the puissance.
-	 */
-	public byte getPuissance() {
-		return puissance;
-	}
-	
 	public int getSolvedCount() {
 		int count = 0;
 		for (int i = 0; i < length; i++) {
@@ -100,9 +82,7 @@ public final class Grille implements Cloneable, Serializable {
 		return count;
 	}
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
+	@Override
 	public Object clone() {
 		Grille newGrille;
 		try {

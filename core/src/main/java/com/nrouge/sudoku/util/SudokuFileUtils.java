@@ -39,17 +39,7 @@ public final class SudokuFileUtils {
 			catch (IOException ioe) { }
 		}
 	}
-	
-	public static Grille importFromResource(String resourceName) throws IOException {
-		InputStream is = null;
-		try {
-			is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
-			return importFromStream(is);
-		} finally {
-			close(is);
-		}
-	}
-	
+
 	public static Grille importFromFile(File f) throws IOException {
 		InputStream is = null;
 		try {

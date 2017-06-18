@@ -97,7 +97,7 @@ public final class PossibilitesUtils {
 	}
 	
 	public static String toBinaryString(long pos, int length) {
-		StringBuffer sb = new StringBuffer(length);
+		StringBuilder sb = new StringBuilder(length);
 		for (int v = length - 1; v >= 0; v--) {
 			long vMask = 1 << v;
 			sb.append(((pos & vMask) == vMask) ? '1' : '0');

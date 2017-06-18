@@ -21,8 +21,8 @@ public final class SwingGUIUtils {
 		BreakIterator boundary = BreakIterator.getCharacterInstance();
 		boundary.setText(text);
 
-		StringBuffer trial = new StringBuffer();
-		StringBuffer real = new StringBuffer("<html>");
+		StringBuilder trial = new StringBuilder();
+		StringBuilder real = new StringBuilder("<html>");
 
 		int start = boundary.first();
 		for (int end = boundary.next(); end != BreakIterator.DONE;
@@ -32,7 +32,7 @@ public final class SwingGUIUtils {
 			int trialWidth = SwingUtilities.computeStringWidth(fm,
 				trial.toString());
 			if (trialWidth > containerWidth) {
-				trial = new StringBuffer(word);
+				trial = new StringBuilder(word);
 				real.append("<br>");
 			}
 			real.append(word);

@@ -39,9 +39,7 @@ public final class CharValeurs implements Serializable {
 		return representation.indexOf(c);
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
+	@Override
 	public String toString() {
 		return representation;
 	}

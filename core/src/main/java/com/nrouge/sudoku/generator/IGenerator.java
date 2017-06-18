@@ -16,7 +16,9 @@ public interface IGenerator {
 	 * @param level niveau 
 	 * @return le sudoku
 	 */
-	Grille generate(byte puissance, int level);
+	default Grille generate(byte puissance, int level) {
+		return generate(puissance, level, null);
+	}
 	
 	Grille generate(byte puissance, int level, IGeneratorProgressionListener gpl);
 }

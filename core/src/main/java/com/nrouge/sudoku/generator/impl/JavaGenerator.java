@@ -12,17 +12,8 @@ import com.nrouge.sudoku.solver.SolverFactory;
  * @author Nicolas Rougé
  */
 public final class JavaGenerator implements IGenerator {
-	
-	/**
-	 * @see com.nrouge.sudoku.generator.IGenerator#generate(byte, int)
-	 */
-	public Grille generate(byte puissance, int level) {
-		return generate(puissance, level, null);
-	}
 
-	/**
-	 * @see com.nrouge.sudoku.generator.IGenerator#generate(byte, int, com.nrouge.sudoku.generator.IGeneratorProgressionListener)
-	 */
+	@Override
 	public Grille generate(byte puissance, int level, IGeneratorProgressionListener gpl) {
 		Grille res = null;
 		ISolver solver = SolverFactory.createDefaultSolver();

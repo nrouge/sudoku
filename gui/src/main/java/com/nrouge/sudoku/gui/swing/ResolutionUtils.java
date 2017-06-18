@@ -114,9 +114,7 @@ public final class ResolutionUtils {
 			this.sleepTime = sleepTime;
 		}
 
-		/**
-		 * @see com.nrouge.sudoku.solver.ICaseChangeListener#caseHasChanged(com.nrouge.sudoku.model.Case)
-		 */
+		@Override
 		public void caseHasChanged(Case c) {
 			sleep();
 			CasePanel cp = (CasePanel) casePanelMap.get(c);

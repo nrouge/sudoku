@@ -4,11 +4,15 @@ import java.awt.Font;
 import java.util.Map;
 
 import com.nrouge.sudoku.gui.common.GUIConfig;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
  * @author Nicolas Rougé
  */
+@Getter
+@Setter
 public class SwingGUIConfig extends GUIConfig {
 	
 	/**
@@ -46,22 +50,6 @@ public class SwingGUIConfig extends GUIConfig {
 	 * Indique si la résolution doit être visible par l'utilisateur
 	 */
 	private boolean visualResolution;
-	
-	/**
-	 * Returns the casePanelMap
-	 * @return Map
-	 */
-	public Map getCasePanelMap() {
-		return casePanelMap;
-	}
-
-	/**
-	 * Sets the casePanelMap
-	 * @param casePanelMap The casePanelMap to set.
-	 */
-	public void setCasePanelMap(Map casePanelMap) {
-		this.casePanelMap = casePanelMap;
-	}
 
 	/**
 	 * @param puissance
@@ -72,54 +60,6 @@ public class SwingGUIConfig extends GUIConfig {
 		final Font font = sudokuSwingGUI.getContentPane().getFont();
 		valeurFont = font.deriveFont(VALEUR_FONT_STYLE, VALEUR_FONT_SIZE);
 		possibiliteFont = font.deriveFont(POSSIBILITE_FONT_STYLE, POSSIBILITE_FONT_SIZE);
-	}
-
-	/**
-	 * Returns the sudokuSwingGUI
-	 * @return SudokuSwingGUI
-	 */
-	public SudokuSwingGUI getSudokuSwingGUI() {
-		return sudokuSwingGUI;
-	}
-
-	/**
-	 * Returns the possibiliteFont
-	 * @return Font
-	 */
-	public Font getPossibiliteFont() {
-		return possibiliteFont;
-	}
-
-	/**
-	 * Returns the valeurFont
-	 * @return Font
-	 */
-	public Font getValeurFont() {
-		return valeurFont;
-	}
-
-	/**
-	 * Returns the visualResolution
-	 * @return boolean
-	 */
-	public boolean isVisualResolution() {
-		return visualResolution;
-	}
-
-	/**
-	 * Sets the visualResolution
-	 * @param visualResolution The visualResolution to set.
-	 */
-	public void setVisualResolution(boolean visualResolution) {
-		this.visualResolution = visualResolution;
-	}
-
-	/**
-	 * Sets the sudokuSwingGUI
-	 * @param sudokuSwingGUI The sudokuSwingGUI to set.
-	 */
-	public void setSudokuSwingGUI(SudokuSwingGUI sudokuSwingGUI) {
-		this.sudokuSwingGUI = sudokuSwingGUI;
 	}
 
 }
