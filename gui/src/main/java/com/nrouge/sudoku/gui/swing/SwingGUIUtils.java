@@ -9,11 +9,11 @@ import javax.swing.SwingUtilities;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public final class SwingGUIUtils {
 	
-	// inspiré de http://david.fallingrock.net/2005/06/30/wrap-jlabel-text/
+	// inspirÃ© de http://david.fallingrock.net/2005/06/30/wrap-jlabel-text/
 	public static String getWrappedLabelText(Container labelContainer, Font labelFont, String text) {
 		FontMetrics fm = labelContainer.getFontMetrics(labelFont);
 		int containerWidth = labelContainer.getWidth();

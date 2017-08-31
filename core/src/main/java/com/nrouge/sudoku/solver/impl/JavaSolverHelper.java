@@ -35,16 +35,16 @@ class JavaSolverHelper {
 			for (int j = 0; j < length; j++) {
 				cs[i][j] = g.getCase(i, j); //lignes
 				cs[length + i][j] = g.getCase(j, i); //colonnes
-				cs[length2 + i][j] = g.getCase(puissance * (i / puissance) + (j / puissance), puissance * (i % puissance) + j % puissance); //carrés
+				cs[length2 + i][j] = g.getCase(puissance * (i / puissance) + (j / puissance), puissance * (i % puissance) + j % puissance); //carrÃ©s
 			}
 		}
 	}
 
 	/**
-	 * Résolution niveau 0 : ensemble des valeurs possibles d'une case = tout - ensemble des valeurs des autres cases.
-	 * Les autres cases sont prises dans la ligne, la colonne et le carré auxquels appartient la case en cours.
-	 * L'algo s'arrête à la première case résolue
-	 * @return true si une case a été résolue
+	 * RÃ©solution niveau 0 : ensemble des valeurs possibles d'une case = tout - ensemble des valeurs des autres cases.
+	 * Les autres cases sont prises dans la ligne, la colonne et le carrÃ© auxquels appartient la case en cours.
+	 * L'algo s'arrÃªte Ã  la premiÃ¨re case rÃ©solue
+	 * @return true si une case a Ã©tÃ© rÃ©solue
 	 * @throws UnsolvableCaseException
 	 */
 	final boolean solve0()throws UnsolvableCaseException {
@@ -54,7 +54,7 @@ class JavaSolverHelper {
 				Case c = lig[j];
 				if (!c.isSolved()) {
 					Case[] col = cs[length + j]; //colonne de la case (i,j)
-					Case[] car = cs[length2 + puissance * (i / puissance) + (j / puissance)]; //carré de la case (i,j)
+					Case[] car = cs[length2 + puissance * (i / puissance) + (j / puissance)]; //carrÃ© de la case (i,j)
 					long pAvant = c.getPossibilites();
 					long pos = pAvant;
 					pos &= calculePossibilites(lig);
@@ -88,14 +88,14 @@ class JavaSolverHelper {
 
 	
 	/**
-	 * Recherche dans les ensembles d'une valeur possible qui se répète une seule fois 
-	 * @return true si une case a été résolue
+	 * Recherche dans les ensembles d'une valeur possible qui se rÃ©pÃ¨te une seule fois 
+	 * @return true si une case a Ã©tÃ© rÃ©solue
 	 */
 	final boolean solve1() {
-		final int[] posCount = new int[length]; // compteur de répétition sur les valeurs
-		final int[] idx = new int[length]; // dernier index de la case dans l'ensemble qui a la valeur en possibilité
+		final int[] posCount = new int[length]; // compteur de rÃ©pÃ©tition sur les valeurs
+		final int[] idx = new int[length]; // dernier index de la case dans l'ensemble qui a la valeur en possibilitÃ©
 		for (int i = 0; i < length3; i++) { // parcourt des ensembles
-			Case[] es = cs[i]; // ensemble en cours (ligne, colonne ou carré)
+			Case[] es = cs[i]; // ensemble en cours (ligne, colonne ou carrÃ©)
 			for (int j = 0; j < length; j++) { // boucle sur les cases de l'ensemble
 				Case c = es[j];
 				if (!c.isSolved()) {
@@ -110,7 +110,7 @@ class JavaSolverHelper {
 				}
 			}
 			for (int v = 0; v < length; v++) {
-				if (posCount[v] == 1) { // test si la valeur est répétée une seule fois 
+				if (posCount[v] == 1) { // test si la valeur est rÃ©pÃ©tÃ©e une seule fois 
 					Case c = cs[i][idx[v]];
 					c.setValeur(v);
 					if (ccl != null) ccl.caseHasChanged(c);
@@ -118,24 +118,24 @@ class JavaSolverHelper {
 					return true;
 				}
 			}
-			Arrays.fill(posCount, 0); //réinitialisation de posCount (pas la peine de réinitialiser idx)
+			Arrays.fill(posCount, 0); //rÃ©initialisation de posCount (pas la peine de rÃ©initialiser idx)
 		}
 		return false;
 	}
 	
 	/**
-	 * Recherche dans les ensembles de n répétitions de n possiblités (ou d'un sous-ensemble de ces n possibilités)
-	 * @return 0 si des possibilités ont été otées, -1 si rien n'a été fait, et sinon le nombre de cases résolues
+	 * Recherche dans les ensembles de n rÃ©pÃ©titions de n possiblitÃ©s (ou d'un sous-ensemble de ces n possibilitÃ©s)
+	 * @return 0 si des possibilitÃ©s ont Ã©tÃ© otÃ©es, -1 si rien n'a Ã©tÃ© fait, et sinon le nombre de cases rÃ©solues
 	 * @throws UnsolvableCaseException
 	 */
 	final int solve2() throws UnsolvableCaseException {
-		final int[] idx = new int[length]; //index dans l'ensemble de chaque case non résolue
-		final long[] pos = new long[length]; //possiblités de chaque case non résolue
-		final int[] nbPos = new int[length]; //nombre de possibilités pour chaque case non résolue
+		final int[] idx = new int[length]; //index dans l'ensemble de chaque case non rÃ©solue
+		final long[] pos = new long[length]; //possiblitÃ©s de chaque case non rÃ©solue
+		final int[] nbPos = new int[length]; //nombre de possibilitÃ©s pour chaque case non rÃ©solue
 		for (int i = 0; i < length3; i++) {
-			final Case[] es = cs[i]; // ensemble de cases (ligne, colonne ou carré)
-			int nbNotSolved = 0; // nombre de cases non résolues de l'ensemble
-			long vMask = 0; // masque des possibilités restantes pour l'ensemble
+			final Case[] es = cs[i]; // ensemble de cases (ligne, colonne ou carrÃ©)
+			int nbNotSolved = 0; // nombre de cases non rÃ©solues de l'ensemble
+			long vMask = 0; // masque des possibilitÃ©s restantes pour l'ensemble
 			for (int j = 0; j < length; j++) {
 				Case c = es[j];
 				if (!c.isSolved()) {
@@ -148,8 +148,8 @@ class JavaSolverHelper {
 				}
 			}
 			if ((vMask != 0) && (nbNotSolved > 3)) {
-				//il y a au moins 3 cases non résolues
-				// => on fait varier n de 2 à min(<nombre de cases non résolues>,<nombre de valeurs possibles>) - 1
+				//il y a au moins 3 cases non rÃ©solues
+				// => on fait varier n de 2 Ã  min(<nombre de cases non rÃ©solues>,<nombre de valeurs possibles>) - 1
 				/*if (log.isDebugEnabled()) {
 					StringBuilder sb = new StringBuilder();
 					for (int j = 0; j < nbNotSolved; j++) sb.append((j == 0) ? "" : "|").append(toString(PossibilitesUtils.getValeursPossibles(pos[j])));
@@ -158,13 +158,13 @@ class JavaSolverHelper {
 				final int nb = PossibilitesUtils.getNbPossibilites(vMask);
 				final int N = Math.min(nbNotSolved, nb) - 1;
 				//if (log.isDebugEnabled()) log.debug("2:i="+i+",nb="+nb+",nbNotSolved="+nbNotSolved+",N="+N);
-				for (int n = 2; n <= N; n++) { // boucle sur le nombre de répétitions
-					//il faut qu'il y ait au moins n cases ayant au plus n possiblités
+				for (int n = 2; n <= N; n++) { // boucle sur le nombre de rÃ©pÃ©titions
+					//il faut qu'il y ait au moins n cases ayant au plus n possiblitÃ©s
 					int nbCaseOK = 0;
 					for (int j = 0; j < nbNotSolved; j++) if (nbPos[j] <= n) nbCaseOK++;
 					if (nbCaseOK < n) continue;
 					//if (log.isDebugEnabled()) log.debug("2:i="+i+",n="+n+",pos="+toBinaryString(vMask));
-					//on construit un deuxième tableau d'index pour les cases à tester
+					//on construit un deuxiÃ¨me tableau d'index pour les cases Ã  tester
 					final int[] idx2 = new int[nbCaseOK];
 					int c = 0;
 					for (int j = 0; j < nbNotSolved; j++) if (nbPos[j] <= n) idx2[c++] = j;
@@ -205,17 +205,17 @@ class JavaSolverHelper {
 	}
 	
 	/**
-	 * Algo : si une possibilité se trouve uniquement sur une ligne ou une colonne d'un carré, elle ne peut pas se
-	 * trouver dans les autres lignes ou colonnes des autres carrés. 
+	 * Algo : si une possibilitÃ© se trouve uniquement sur une ligne ou une colonne d'un carrÃ©, elle ne peut pas se
+	 * trouver dans les autres lignes ou colonnes des autres carrÃ©s. 
 	 * @return
 	 * @throws UnsolvableCaseException
 	 */
 	final int solve3() throws UnsolvableCaseException{
-		final long[] posLigne = new long[puissance]; //possibilités pour la ligne du carré
-		final long[] posColonne = new long[puissance]; //possibilités pour la colonne du carré
-		final long[] posAutreLigne = new long[puissance]; //possibilités pour les autres lignes du carré
-		final long[] posAutreColonne = new long[puissance]; //possibilités pour les autres colonnes du carré
-		//parcourt des carrés
+		final long[] posLigne = new long[puissance]; //possibilitÃ©s pour la ligne du carrÃ©
+		final long[] posColonne = new long[puissance]; //possibilitÃ©s pour la colonne du carrÃ©
+		final long[] posAutreLigne = new long[puissance]; //possibilitÃ©s pour les autres lignes du carrÃ©
+		final long[] posAutreColonne = new long[puissance]; //possibilitÃ©s pour les autres colonnes du carrÃ©
+		//parcourt des carrÃ©s
 		for (int a = 0; a < puissance; a++)
 		for (int b = 0; b < puissance; b++) {
 			final Case[] carre = cs[length2 + puissance * a + b];
@@ -225,7 +225,7 @@ class JavaSolverHelper {
 				if (!c.isSolved()) vMask |= c.getPossibilites();
 			}
 			if (vMask == 0) continue;
-			//le carré a au moins une case non résolue.
+			//le carrÃ© a au moins une case non rÃ©solue.
 			for (int i = 0; i < puissance; i++)
 			for (int j = 0; j < puissance; j++) {
 				final int idx = puissance * i + j;
@@ -296,7 +296,7 @@ class JavaSolverHelper {
 	}
 	
 	/**
-	 * Tentative de résolution en testant toutes les valeurs possibles de la première case ayant le moins de possibilités.
+	 * Tentative de rÃ©solution en testant toutes les valeurs possibles de la premiÃ¨re case ayant le moins de possibilitÃ©s.
 	 * @return
 	 */
 	boolean solve4(int level, ISolver solver) throws MultipleSolutionException, UndeterminedSolutionException {
@@ -339,12 +339,12 @@ class JavaSolverHelper {
 				throw use;
 			}
 			if (!test) {
-				//la solution est indéterminée si on a pas résolu au niveau 4 (il faudrait encore faire des suppositions pour être sûr)
-				if (level == 4) throw new UndeterminedSolutionException("Solution indéterminée");
-				//sinon, on continue de regarder les autres possibilités
+				//la solution est indÃ©terminÃ©e si on a pas rÃ©solu au niveau 4 (il faudrait encore faire des suppositions pour Ãªtre sÃ»r)
+				if (level == 4) throw new UndeterminedSolutionException("Solution indÃ©terminÃ©e");
+				//sinon, on continue de regarder les autres possibilitÃ©s
 				continue;
 			}
-			if (valeur != -1) { //on a déjà une solution => la solution est donc multiple
+			if (valeur != -1) { //on a dÃ©jÃ  une solution => la solution est donc multiple
 				throw new MultipleSolutionException();
 			}
 			valeur = valeursPossibles[i];

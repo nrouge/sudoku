@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import com.nrouge.sudoku.generator.impl.JavaGenerator;
 import com.nrouge.sudoku.solver.impl.JavaSolver;
 
-public class NicoGeneratorTest extends TestCase {
+public class JavaGeneratorTest extends TestCase {
 
 	/*
 	 * Test method for 'com.nrouge.sudoku.generator.NicoGenerator.generate(byte, int)'

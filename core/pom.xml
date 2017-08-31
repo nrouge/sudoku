@@ -11,4 +11,11 @@
 	<artifactId>sudoku-core</artifactId>
 	<description>Sudoku Core</description>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>

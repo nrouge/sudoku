@@ -133,9 +133,9 @@ public class SudokuMenuBar extends JMenuBar {
 				if (fc.showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) return;
 				Grille grille;
 				try {
-					grille = SudokuFileUtils.importFromFile(fc.getSelectedFile());
-				} catch (IOException ioe) {
-					JOptionPane.showMessageDialog(frame, ioe, "Erreur", JOptionPane.ERROR_MESSAGE);
+					grille = SudokuFileUtils.importFromFile(fc.getSelectedFile()).get();
+				} catch (RuntimeException rte) {
+					JOptionPane.showMessageDialog(frame, rte, "Erreur", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				if (grille == null) {
