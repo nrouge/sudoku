@@ -5,7 +5,7 @@ public final class PossibilitesUtils {
 
 	private PossibilitesUtils() {
 	}
-	
+
 	/**
 	 * @param pos masque des possiblités
 	 * @return la valeur correspondante à la seule possibilité, -1 sinon
@@ -19,9 +19,10 @@ public final class PossibilitesUtils {
 		}
 		return (pos == 1) ? valeur : -1;
 	}
-	
+
 	/**
 	 * Convertit un masque de possibilités en tableau de valeurs possibles
+	 *
 	 * @param pos
 	 * @return
 	 */
@@ -38,7 +39,7 @@ public final class PossibilitesUtils {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * @param pos
 	 * @return
@@ -52,9 +53,10 @@ public final class PossibilitesUtils {
 		}
 		return nb;
 	}
-	
+
 	/**
 	 * Renvoie la liste des masques des possiblités à n valeurs
+	 *
 	 * @param valeurs
 	 * @param n
 	 * @return
@@ -79,12 +81,12 @@ public final class PossibilitesUtils {
 		}
 		return res;
 	}
-	
+
 	public static boolean incrementeCompteur(int[] compteur, int nb) {
 		final int length = compteur.length;
 		return incrementeCompteur(compteur, nb, length, length - 1);
 	}
-	
+
 	private static boolean incrementeCompteur(int[] compteur, int nb, int n, int i) {
 		if (compteur[i] == nb - n + i) {
 			if (i == 0) return false;
@@ -94,15 +96,6 @@ public final class PossibilitesUtils {
 			compteur[i]++;
 		}
 		return true;
-	}
-	
-	public static String toBinaryString(long pos, int length) {
-		StringBuilder sb = new StringBuilder(length);
-		for (int v = length - 1; v >= 0; v--) {
-			long vMask = 1 << v;
-			sb.append(((pos & vMask) == vMask) ? '1' : '0');
-		}
-		return sb.toString();
 	}
 
 }

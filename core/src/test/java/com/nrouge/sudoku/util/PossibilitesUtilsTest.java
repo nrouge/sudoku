@@ -1,14 +1,17 @@
 package com.nrouge.sudoku.util;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class PossibilitesUtilsTest extends TestCase {
+import static org.assertj.core.api.Assertions.assertThat;
 
+public class PossibilitesUtilsTest {
+
+	@Test
 	public void testGetPossibilitesMasques() {
-		long pos = 1+2+4+8+16+32;
-		System.out.println("pos="+pos+":"+PossibilitesUtils.toBinaryString(pos, 6)); 
+		long pos = 1 + 2 + 4 + 8 + 16 + 32;
+		System.out.println("pos=" + pos + ":" + Long.toBinaryString(pos));
 		long[] t = PossibilitesUtils.getPossibilitesMasques(pos, 5);
-		assertNotNull(t);
-		for (int i = 0; i < t.length; i++) System.out.println(PossibilitesUtils.toBinaryString(t[i], 6));
+		assertThat(t).isNotNull();
+		for (long l : t) System.out.println(Long.toBinaryString(l));
 	}
 }
