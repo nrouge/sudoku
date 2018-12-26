@@ -1,17 +1,17 @@
 package com.nrouge.sudoku.generator;
 
-import junit.framework.TestCase;
-
 import com.nrouge.sudoku.generator.impl.JavaGenerator;
-import com.nrouge.sudoku.solver.impl.JavaSolver;
+import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JavaGeneratorTest extends TestCase {
 
 	/*
 	 * Test method for 'com.nrouge.sudoku.generator.NicoGenerator.generate(byte, int)'
 	 */
 	public void testGenerate() {
-		System.out.println(new JavaGenerator().generate((byte) 3, 0));
+		log.info(new JavaGenerator().generate((byte) 3, 0).toString());
 	}
 
 }

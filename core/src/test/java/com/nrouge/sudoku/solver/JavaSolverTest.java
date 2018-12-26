@@ -1,41 +1,59 @@
 package com.nrouge.sudoku.solver;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.IntStream;
-
 import com.nrouge.sudoku.model.Grille;
 import com.nrouge.sudoku.solver.impl.JavaSolver;
 import com.nrouge.sudoku.util.SudokuFileUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 @Slf4j
 public class JavaSolverTest {
 
 	JavaSolver solver = new JavaSolver();
 
-	@Test
-	public void solve() {
+	Map<String, Grille> grilles;
+
+	@Before
+	public void init() {
 		String basedir = getClass().getResource("/").getFile();
 		File directory = new File(basedir, "com" + File.separator + "nrouge" + File.separator + "sudoku" + File.separator + "solver");
 		assertThat(directory).exists().isDirectory();
-		Arrays.stream(directory.listFiles((dir, name) -> name.endsWith(".sdk"))).forEach(this::testSolve);
+		grilles = Stream.of(directory.listFiles((dir, name) -> name.endsWith(".sdk")))
+				.collect(Collectors.toMap(File::getName, this::loadGrille));
 	}
 
-	private void testSolve(File sdkFile) {
+	private Grille loadGrille(File sdkFile) {
 		Optional<Grille> grille = SudokuFileUtils.importFromFile(sdkFile);
 		assertThat(grille.isPresent()).isTrue();
-		log.info("Trying to solve {}", sdkFile);
-		testSolve(grille.get());
+		return grille.get();
+	}
+
+	@Test
+	public void solve() {
+		grilles.entrySet().forEach(this::testSolve);
+	}
+
+	@Test
+	public void performanceTest() {
+		long startTime = System.currentTimeMillis();
+		for (int i = 0; i < 10; i++) {
+			grilles.values().forEach(this::trySolve);
+		}
+		log.info("Executed in {}ms", System.currentTimeMillis() - startTime);
+	}
+
+	private void testSolve(Map.Entry<String, Grille> entry) {
+		log.info("Trying to solve {}", entry.getKey());
+		testSolve(entry.getValue());
 	}
 
 	private void testSolve(Grille grille) {
@@ -56,6 +74,13 @@ public class JavaSolverTest {
 			} else {
 				log.info("{}:NO", level);
 			}
+		}
+	}
+
+	private void trySolve(Grille grille) {
+		try {
+			solver.solve((Grille) grille.clone(), 8);
+		} catch (SolverException se) {
 		}
 	}
 

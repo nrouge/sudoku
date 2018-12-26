@@ -1,19 +1,13 @@
 package com.nrouge.sudoku.solver.impl;
 
-import java.util.Arrays;
-
 import com.nrouge.sudoku.model.Case;
 import com.nrouge.sudoku.model.Grille;
-import com.nrouge.sudoku.solver.ICaseChangeListener;
-import com.nrouge.sudoku.solver.ISolver;
-import com.nrouge.sudoku.solver.MultipleSolutionException;
-import com.nrouge.sudoku.solver.UndeterminedSolutionException;
-import com.nrouge.sudoku.solver.UnsolvableCaseException;
+import com.nrouge.sudoku.solver.*;
 import com.nrouge.sudoku.util.PossibilitesUtils;
 
+import java.util.Arrays;
+
 class JavaSolverHelper {
-	
-	//private static final Log log = LogFactory.getLog(NicoSolverHelper.class);
 
 	final Grille g;
 	final ICaseChangeListener ccl;
@@ -22,7 +16,7 @@ class JavaSolverHelper {
 	final int length3;
 	final byte puissance;
 	final Case[][] cs;
-	
+
 	JavaSolverHelper(Grille g, ICaseChangeListener ccl) {
 		this.g = g;
 		this.ccl = ccl;
@@ -31,7 +25,7 @@ class JavaSolverHelper {
 		length3 = 3 * length;
 		puissance = g.getPuissance();
 		cs = new Case[length3][length];
-		for (int i = 0; i < length ; i++) {
+		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length; j++) {
 				cs[i][j] = g.getCase(i, j); //lignes
 				cs[length + i][j] = g.getCase(j, i); //colonnes
@@ -44,10 +38,11 @@ class JavaSolverHelper {
 	 * Résolution niveau 0 : ensemble des valeurs possibles d'une case = tout - ensemble des valeurs des autres cases.
 	 * Les autres cases sont prises dans la ligne, la colonne et le carré auxquels appartient la case en cours.
 	 * L'algo s'arrête à la première case résolue
+	 *
 	 * @return true si une case a été résolue
 	 * @throws UnsolvableCaseException
 	 */
-	final boolean solve0()throws UnsolvableCaseException {
+	final boolean solve0() throws UnsolvableCaseException {
 		for (int i = 0; i < length; i++) {
 			Case[] lig = cs[i]; //ligne de la case (i,j)
 			for (int j = 0; j < length; j++) {
@@ -68,17 +63,16 @@ class JavaSolverHelper {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Renvoie le masque des valeurs encore possibles d'un ensemble de cases.
+	 *
 	 * @param cases
 	 * @return
 	 */
 	private long calculePossibilites(Case[] es) {
-		final int length = es.length;
 		long res = (1 << length) - 1;
-		for (int i = 0; i < length; i++) {
-			Case c = es[i];
+		for (Case c : es) {
 			if (c.isSolved()) {
 				res &= ~(1 << c.getValeur());
 			}
@@ -86,9 +80,10 @@ class JavaSolverHelper {
 		return res;
 	}
 
-	
+
 	/**
-	 * Recherche dans les ensembles d'une valeur possible qui se répète une seule fois 
+	 * Recherche dans les ensembles d'une valeur possible qui se répète une seule fois
+	 *
 	 * @return true si une case a été résolue
 	 */
 	final boolean solve1() {
@@ -100,7 +95,7 @@ class JavaSolverHelper {
 				Case c = es[j];
 				if (!c.isSolved()) {
 					final long pos = c.getPossibilites();
-					for (int v = 0 ; v < length; v++) { // boucle sur les valeur possibles
+					for (int v = 0; v < length; v++) { // boucle sur les valeur possibles
 						long vMask = 1 << v;
 						if ((vMask & pos) == vMask) {
 							posCount[v]++;
@@ -122,9 +117,10 @@ class JavaSolverHelper {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Recherche dans les ensembles de n répétitions de n possiblités (ou d'un sous-ensemble de ces n possibilités)
+	 *
 	 * @return 0 si des possibilités ont été otées, -1 si rien n'a été fait, et sinon le nombre de cases résolues
 	 * @throws UnsolvableCaseException
 	 */
@@ -150,20 +146,13 @@ class JavaSolverHelper {
 			if ((vMask != 0) && (nbNotSolved > 3)) {
 				//il y a au moins 3 cases non résolues
 				// => on fait varier n de 2 à min(<nombre de cases non résolues>,<nombre de valeurs possibles>) - 1
-				/*if (log.isDebugEnabled()) {
-					StringBuilder sb = new StringBuilder();
-					for (int j = 0; j < nbNotSolved; j++) sb.append((j == 0) ? "" : "|").append(toString(PossibilitesUtils.getValeursPossibles(pos[j])));
-					log.debug("2:i="+i+":"+sb.toString());
-				}*/
 				final int nb = PossibilitesUtils.getNbPossibilites(vMask);
 				final int N = Math.min(nbNotSolved, nb) - 1;
-				//if (log.isDebugEnabled()) log.debug("2:i="+i+",nb="+nb+",nbNotSolved="+nbNotSolved+",N="+N);
 				for (int n = 2; n <= N; n++) { // boucle sur le nombre de répétitions
 					//il faut qu'il y ait au moins n cases ayant au plus n possiblités
 					int nbCaseOK = 0;
 					for (int j = 0; j < nbNotSolved; j++) if (nbPos[j] <= n) nbCaseOK++;
 					if (nbCaseOK < n) continue;
-					//if (log.isDebugEnabled()) log.debug("2:i="+i+",n="+n+",pos="+toBinaryString(vMask));
 					//on construit un deuxième tableau d'index pour les cases à tester
 					final int[] idx2 = new int[nbCaseOK];
 					int c = 0;
@@ -203,100 +192,102 @@ class JavaSolverHelper {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Algo : si une possibilité se trouve uniquement sur une ligne ou une colonne d'un carré, elle ne peut pas se
-	 * trouver dans les autres lignes ou colonnes des autres carrés. 
+	 * trouver dans les autres lignes ou colonnes des autres carrés.
+	 *
 	 * @return
 	 * @throws UnsolvableCaseException
 	 */
-	final int solve3() throws UnsolvableCaseException{
+	final int solve3() throws UnsolvableCaseException {
 		final long[] posLigne = new long[puissance]; //possibilités pour la ligne du carré
 		final long[] posColonne = new long[puissance]; //possibilités pour la colonne du carré
 		final long[] posAutreLigne = new long[puissance]; //possibilités pour les autres lignes du carré
 		final long[] posAutreColonne = new long[puissance]; //possibilités pour les autres colonnes du carré
 		//parcourt des carrés
 		for (int a = 0; a < puissance; a++)
-		for (int b = 0; b < puissance; b++) {
-			final Case[] carre = cs[length2 + puissance * a + b];
-			long vMask = 0;
-			for (int i = 0; i < length; i++) {
-				Case c = carre[i];
-				if (!c.isSolved()) vMask |= c.getPossibilites();
-			}
-			if (vMask == 0) continue;
-			//le carré a au moins une case non résolue.
-			for (int i = 0; i < puissance; i++)
-			for (int j = 0; j < puissance; j++) {
-				final int idx = puissance * i + j;
-				final Case c = carre[idx];
-				if (c.isSolved()) continue;
-				final long p = c.getPossibilites();
-				posLigne[i] |= p;
-				posColonne[j] |= p;
-				for (int k = 0; k < puissance; k++) {
-					if (k != i) posAutreLigne[k] |= p;
-					if (k != j) posAutreColonne[k] |= p;
+			for (int b = 0; b < puissance; b++) {
+				final Case[] carre = cs[length2 + puissance * a + b];
+				long vMask = 0;
+				for (int i = 0; i < length; i++) {
+					Case c = carre[i];
+					if (!c.isSolved()) vMask |= c.getPossibilites();
 				}
-			}
-			final int[] valeurs = PossibilitesUtils.getValeursPossibles(vMask);
-			final long valeursLength = valeurs.length;
-			for (int i = 0; i < valeursLength; i++) {
-				final int v = valeurs[i];
-				final long p = 1 << v;
-				//recherche des lignes ou colonnes contenant cette valeur, sachant que les autres
-				//lignes ou colonnes ne doivent pas la contenir
-				for (int k = 0; k < puissance; k++) {
-					final long pal = posAutreLigne[k];
-					if (((p & posLigne[k]) == p) && (pal != 0) && ((p & pal) == 0)) {
-						Case[] lig = cs[puissance * a + k];
-						int nbCasesResolues = 0;
-						int nbCasesModifiees = 0;
-						for (int j = 0; j < length; j++) {
-							if (j / puissance == b) continue;
-							Case cas = lig[j];
-							if (cas.isSolved()) continue;
-							long pAvant = cas.getPossibilites();
-							long pApres = ~p & pAvant;
-							if (pAvant == pApres) continue;
-							updatePossiblites(cas, pApres, 3);
-							nbCasesModifiees++;
-							if (cas.isSolved()) nbCasesResolues++;
+				if (vMask == 0) continue;
+				//le carré a au moins une case non résolue.
+				for (int i = 0; i < puissance; i++)
+					for (int j = 0; j < puissance; j++) {
+						final int idx = puissance * i + j;
+						final Case c = carre[idx];
+						if (c.isSolved()) continue;
+						final long p = c.getPossibilites();
+						posLigne[i] |= p;
+						posColonne[j] |= p;
+						for (int k = 0; k < puissance; k++) {
+							if (k != i) posAutreLigne[k] |= p;
+							if (k != j) posAutreColonne[k] |= p;
 						}
-						if (nbCasesResolues > 0) return nbCasesResolues;
-						if (nbCasesModifiees > 0) return 0;
 					}
-					final long pac = posAutreColonne[k];
-					if (((p & posColonne[k]) == p) && (pac != 0) && ((p & pac) == 0)) {
-						Case[] col = cs[length + puissance * b + k];
-						int nbCasesResolues = 0;
-						int nbCasesModifiees = 0;
-						for (int j = 0; j < length; j++) {
-							if (j / puissance == a) continue;
-							Case cas = col[j];
-							if (cas.isSolved()) continue;
-							long pAvant = cas.getPossibilites();
-							long pApres = ~p & pAvant;
-							if (pAvant == pApres) continue;
-							updatePossiblites(cas, pApres, 3);
-							nbCasesModifiees++;
-							if (cas.isSolved()) nbCasesResolues++;
+				final int[] valeurs = PossibilitesUtils.getValeursPossibles(vMask);
+				final long valeursLength = valeurs.length;
+				for (int i = 0; i < valeursLength; i++) {
+					final int v = valeurs[i];
+					final long p = 1 << v;
+					//recherche des lignes ou colonnes contenant cette valeur, sachant que les autres
+					//lignes ou colonnes ne doivent pas la contenir
+					for (int k = 0; k < puissance; k++) {
+						final long pal = posAutreLigne[k];
+						if (((p & posLigne[k]) == p) && (pal != 0) && ((p & pal) == 0)) {
+							Case[] lig = cs[puissance * a + k];
+							int nbCasesResolues = 0;
+							int nbCasesModifiees = 0;
+							for (int j = 0; j < length; j++) {
+								if (j / puissance == b) continue;
+								Case cas = lig[j];
+								if (cas.isSolved()) continue;
+								long pAvant = cas.getPossibilites();
+								long pApres = ~p & pAvant;
+								if (pAvant == pApres) continue;
+								updatePossiblites(cas, pApres, 3);
+								nbCasesModifiees++;
+								if (cas.isSolved()) nbCasesResolues++;
+							}
+							if (nbCasesResolues > 0) return nbCasesResolues;
+							if (nbCasesModifiees > 0) return 0;
 						}
-						if (nbCasesResolues > 0) return nbCasesResolues;
-						if (nbCasesModifiees > 0) return 0;
+						final long pac = posAutreColonne[k];
+						if (((p & posColonne[k]) == p) && (pac != 0) && ((p & pac) == 0)) {
+							Case[] col = cs[length + puissance * b + k];
+							int nbCasesResolues = 0;
+							int nbCasesModifiees = 0;
+							for (int j = 0; j < length; j++) {
+								if (j / puissance == a) continue;
+								Case cas = col[j];
+								if (cas.isSolved()) continue;
+								long pAvant = cas.getPossibilites();
+								long pApres = ~p & pAvant;
+								if (pAvant == pApres) continue;
+								updatePossiblites(cas, pApres, 3);
+								nbCasesModifiees++;
+								if (cas.isSolved()) nbCasesResolues++;
+							}
+							if (nbCasesResolues > 0) return nbCasesResolues;
+							if (nbCasesModifiees > 0) return 0;
+						}
 					}
 				}
+				Arrays.fill(posLigne, 0);
+				Arrays.fill(posColonne, 0);
+				Arrays.fill(posAutreLigne, 0);
+				Arrays.fill(posAutreColonne, 0);
 			}
-			Arrays.fill(posLigne, 0);
-			Arrays.fill(posColonne, 0);
-			Arrays.fill(posAutreLigne, 0);
-			Arrays.fill(posAutreColonne, 0);
-		}
 		return -1;
 	}
-	
+
 	/**
 	 * Tentative de résolution en testant toutes les valeurs possibles de la première case ayant le moins de possibilités.
+	 *
 	 * @return
 	 */
 	boolean solve4(int level, ISolver solver) throws MultipleSolutionException, UndeterminedSolutionException {
@@ -305,17 +296,17 @@ class JavaSolverHelper {
 		int x = -1;
 		int y = -1;
 		for (int i = 0; i < length; i++)
-		for (int j = 0; j < length; j++) {
-			final Case c2 = g.getCase(i, j);
-			if (c2.isSolved()) continue;
-			final int nbPos2 = PossibilitesUtils.getNbPossibilites(c2.getPossibilites());
-			if (nbPos2 < nbPos) {
-				c = c2;
-				nbPos = nbPos2;
-				x = i;
-				y = j;
+			for (int j = 0; j < length; j++) {
+				final Case c2 = g.getCase(i, j);
+				if (c2.isSolved()) continue;
+				final int nbPos2 = PossibilitesUtils.getNbPossibilites(c2.getPossibilites());
+				if (nbPos2 < nbPos) {
+					c = c2;
+					nbPos = nbPos2;
+					x = i;
+					y = j;
+				}
 			}
-		}
 		if (c == null) {
 			//NORMALEMENT IMPOSSIBLE
 			throw new IllegalStateException();
@@ -355,12 +346,10 @@ class JavaSolverHelper {
 		}
 		c.setValeur(valeur);
 		if (ccl != null) ccl.caseHasChanged(c);
-		//if (log.isInfoEnabled()) log.info("4:"+c.getId()+"="+g.getCharValeurs().toChar(valeur));
 		return true;
 	}
 
 	private void updatePossiblites(Case c, long newPos, int level) throws UnsolvableCaseException {
-		//if (log.isInfoEnabled()) log.info(level+":"+c.getId()+":"+toBinaryString(c.getPossibilites())+"->"+toBinaryString(newPos));
 		c.setPossibilites(newPos);
 		if (ccl != null) ccl.caseHasChanged(c);
 		if (newPos == 0) {
@@ -369,7 +358,6 @@ class JavaSolverHelper {
 		if (c.calculerIsSolved()) {
 			if (ccl != null) ccl.caseHasChanged(c);
 		}
-		//if (c.calculerIsSolved() && log.isInfoEnabled()) log.info(level+":"+c.getId()+"="+g.getCharValeurs().toChar(c.getValeur()));
 	}
 
 }
