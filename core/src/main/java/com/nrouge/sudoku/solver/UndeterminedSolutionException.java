@@ -7,11 +7,6 @@ package com.nrouge.sudoku.solver;
 public class UndeterminedSolutionException extends SolverException {
 
 	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 8777620391786136325L;
-
-	/**
 	 * @param message
 	 */
 	public UndeterminedSolutionException(String message) {

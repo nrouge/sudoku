@@ -12,15 +12,10 @@ import com.nrouge.sudoku.model.Grille;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public class GrillePanel extends JPanel {
-	
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 8356229247659064982L;
-	
+
 	private final Grille grille;
 	
 	public GrillePanel(SwingGUIConfig config) {

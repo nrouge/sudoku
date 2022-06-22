@@ -18,7 +18,7 @@ import com.nrouge.sudoku.solver.UnsolvableCaseException;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public final class ResolutionUtils {
 	
@@ -41,7 +41,7 @@ public final class ResolutionUtils {
 		Map casePanelMap = config.getCasePanelMap();
 		SudokuSwingGUI sudokuSwingGUI = config.getSudokuSwingGUI();
 		if (listener != null) {
-			// en mode de résolution visuel, on fige les données saisies par l'utilisateur ...
+			// en mode de rï¿½solution visuel, on fige les donnï¿½es saisies par l'utilisateur ...
 			for (Iterator it = casePanelMap.keySet().iterator(); it.hasNext(); ) {
 				Case c = (Case) it.next();
 				CasePanel cp = (CasePanel) casePanelMap.get(c);
@@ -51,7 +51,7 @@ public final class ResolutionUtils {
 			// ... et on repaint tout
 			sudokuSwingGUI.repaint();
 		}
-		// on lance la résolution
+		// on lance la rï¿½solution
 		ISolver solver = SolverFactory.createDefaultSolver();
 		try {
 			solver.solve(config.getGrille(), config.getResolutionLevel(), listener);
@@ -61,7 +61,7 @@ public final class ResolutionUtils {
 			JOptionPane.showMessageDialog(sudokuSwingGUI, mse.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
 		} catch (UndeterminedSolutionException e) {
 		}
-		//on fige les classes résolues et on resauvegarde les possibilités
+		//on fige les classes rï¿½solues et on resauvegarde les possibilitï¿½s
 		for (Iterator it = casePanelMap.keySet().iterator(); it.hasNext(); ) {
 			Case c = (Case) it.next();
 			CasePanel cp = (CasePanel) casePanelMap.get(c);
@@ -78,10 +78,10 @@ public final class ResolutionUtils {
 			this.config = config;
 		}
 		public void run() {
-			JDialog dialog = new JDialog(config.getSudokuSwingGUI(), "Résolution", true);
+			JDialog dialog = new JDialog(config.getSudokuSwingGUI(), "Rï¿½solution", true);
 			dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			JPanel panel = new JPanel();
-			panel.add(new JLabel("Résolution en cours..."));
+			panel.add(new JLabel("Rï¿½solution en cours..."));
 			dialog.setContentPane(panel);
 			dialog.pack();
 			SolverThread st = new SolverThread(config, dialog);

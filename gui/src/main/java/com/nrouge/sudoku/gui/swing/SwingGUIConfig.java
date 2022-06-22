@@ -9,25 +9,19 @@ import lombok.Setter;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas Rougï¿½
  */
 @Getter
 @Setter
 public class SwingGUIConfig extends GUIConfig {
-	
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -509552238453735138L;
-	
-	
+
 	private static final float VALEUR_FONT_SIZE = 24f;
 	private static final int VALEUR_FONT_STYLE = Font.BOLD;
 	private static final float POSSIBILITE_FONT_SIZE = 10f;
 	private static final int POSSIBILITE_FONT_STYLE = Font.PLAIN;
 
 	/**
-	 * Référence sur la frame principale
+	 * Rï¿½fï¿½rence sur la frame principale
 	 */
 	private transient SudokuSwingGUI sudokuSwingGUI;
 	
@@ -37,17 +31,17 @@ public class SwingGUIConfig extends GUIConfig {
 	private final Font valeurFont;
 	
 	/**
-	 * Fonte pour l'affichage des possibilités
+	 * Fonte pour l'affichage des possibilitï¿½s
 	 */
 	private final Font possibiliteFont;
 	
 	/**
-	 * Mappe de correspondance entre les cases et leur équivalent graphique, CasePanel
+	 * Mappe de correspondance entre les cases et leur ï¿½quivalent graphique, CasePanel
 	 */
 	private Map casePanelMap;
 	
 	/**
-	 * Indique si la résolution doit être visible par l'utilisateur
+	 * Indique si la rï¿½solution doit ï¿½tre visible par l'utilisateur
 	 */
 	private boolean visualResolution;
 

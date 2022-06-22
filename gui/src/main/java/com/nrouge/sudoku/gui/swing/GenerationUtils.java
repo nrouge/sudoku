@@ -75,7 +75,6 @@ public class GenerationUtils {
 	}
 	
 	private static final class GeneratorDialog extends JDialog {
-		private static final long serialVersionUID = 2209498781902351649L;
 		private final JProgressBar progressBar;
 		private GeneratorDialog(SwingGUIConfig config) {
 			super(config.getSudokuSwingGUI(), "Génération", true);

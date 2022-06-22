@@ -8,11 +8,6 @@ import lombok.Setter;
 
 @Getter
 public final class Case implements Cloneable, Serializable {
-	
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 3233565544192566858L;
 
 	/**
 	 * Masque des possibilités pour la case

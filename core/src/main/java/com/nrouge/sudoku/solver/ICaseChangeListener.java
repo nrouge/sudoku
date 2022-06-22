@@ -4,7 +4,7 @@ import com.nrouge.sudoku.model.Case;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public interface ICaseChangeListener {
 	void caseHasChanged(Case c);

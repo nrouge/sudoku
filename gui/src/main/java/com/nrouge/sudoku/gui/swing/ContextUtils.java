@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public final class ContextUtils {
 	

@@ -9,7 +9,7 @@ import com.nrouge.sudoku.solver.UnsolvableCaseException;
 
 /**
  * 
- * @author Nicolas Rougé
+ * @author Nicolas RougÃ©
  */
 public class JNISolver implements ISolver {
 

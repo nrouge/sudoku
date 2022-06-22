@@ -15,11 +15,6 @@ import lombok.Setter;
 public class GUIConfig implements Serializable {
 
 	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -7398356762960339850L;
-
-	/**
 	 * La grille
 	 */
 	private Grille grille;

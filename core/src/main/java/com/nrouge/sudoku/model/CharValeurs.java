@@ -3,11 +3,6 @@ package com.nrouge.sudoku.model;
 import java.io.Serializable;
 
 public final class CharValeurs implements Serializable {
-	
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -9106036680946547297L;
 
 	static final String[] DEFAULT_REPRESENTATION
 		= {

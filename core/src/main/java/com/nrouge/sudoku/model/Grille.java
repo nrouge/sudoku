@@ -5,11 +5,6 @@ import lombok.Getter;
 import java.io.Serializable;
 
 public final class Grille implements Cloneable, Serializable {
-	
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 7337394841683433254L;
 
 	/**
 	 * Le tableau de cases du sudoku

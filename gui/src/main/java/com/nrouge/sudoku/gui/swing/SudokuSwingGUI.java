@@ -8,12 +8,7 @@ import javax.swing.SwingUtilities;
  * @author Nicolas Rougé
  */
 public class SudokuSwingGUI extends JFrame {
-	
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -3056763261165076856L;
-	
+
 	private SwingGUIConfig config;
 	
 	private SudokuSwingGUI() {

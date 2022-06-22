@@ -26,11 +26,7 @@ import com.nrouge.sudoku.util.PossibilitesUtils;
  * @author Nicolas Rougé
  */
 public class CasePanel extends JPanel implements KeyListener, MouseListener, MouseWheelListener {
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 5066973626162910843L;
-	
+
 	/**
 	 * La case
 	 */

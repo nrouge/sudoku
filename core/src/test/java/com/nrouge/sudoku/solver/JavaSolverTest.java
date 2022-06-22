@@ -4,8 +4,8 @@ import com.nrouge.sudoku.model.Grille;
 import com.nrouge.sudoku.solver.impl.JavaSolver;
 import com.nrouge.sudoku.util.SudokuFileUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Map;
@@ -16,14 +16,14 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-public class JavaSolverTest {
+class JavaSolverTest {
 
 	JavaSolver solver = new JavaSolver();
 
 	Map<String, Grille> grilles;
 
-	@Before
-	public void init() {
+	@BeforeEach
+	void init() {
 		String basedir = getClass().getResource("/").getFile();
 		File directory = new File(basedir, "com" + File.separator + "nrouge" + File.separator + "sudoku" + File.separator + "solver");
 		assertThat(directory).exists().isDirectory();
@@ -38,12 +38,12 @@ public class JavaSolverTest {
 	}
 
 	@Test
-	public void solve() {
+	void solve() {
 		grilles.entrySet().forEach(this::testSolve);
 	}
 
 	@Test
-	public void performanceTest() {
+	void performanceTest() {
 		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < 10; i++) {
 			grilles.values().forEach(this::trySolve);
